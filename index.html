@@ -1,0 +1,887 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<title>Здоровая Спина</title>
+<meta name="theme-color" content="#F4F6F3">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Спина">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" href="icon-180.png">
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800&family=Unbounded:wght@500;700&display=swap">
+<style>
+/* Layout: one phone column; real-video cards on a quiet sage ground; ginger cat Tosya as the only illustration */
+:root{
+  --bg:#F4F6F3;--surface:#FFFFFF;--surface-2:#E8EEEA;--ink:#16302B;--muted:#5C716B;--line:#DCE4DF;
+  --brand:#1F7A6B;--brand-2:#E3F1EC;--brand-ink:#FFFFFF;--cta:#FFB547;--cta-ink:#2A1B05;--cta-edge:#E39A2C;
+  --done:#2FA37F;--warn:#C9482C;--warn-bg:#FBE6DF;--watch-bg:#FFF2D9;--watch-ink:#5A3D00;--shadow:rgba(22,48,43,.10);
+  --font-d:"Unbounded","Onest",system-ui,sans-serif;
+  --font-b:"Onest",system-ui,-apple-system,"Segoe UI",sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0F1A18;--surface:#172623;--surface-2:#20332F;--ink:#E6F0EC;--muted:#9DB3AC;--line:#2A403B;
+  --brand:#3FB59E;--brand-2:#1B3631;--brand-ink:#08201B;--cta:#FFC062;--cta-ink:#2A1B05;--cta-edge:#C98422;
+  --done:#3FB59E;--warn:#FF8C6B;--warn-bg:#3A2420;--watch-bg:#3A3018;--watch-ink:#FFE3A6;--shadow:rgba(0,0,0,.35);
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0F1A18;--surface:#172623;--surface-2:#20332F;--ink:#E6F0EC;--muted:#9DB3AC;--line:#2A403B;
+  --brand:#3FB59E;--brand-2:#1B3631;--brand-ink:#08201B;--cta:#FFC062;--cta-ink:#2A1B05;--cta-edge:#C98422;
+  --done:#3FB59E;--warn:#FF8C6B;--warn-bg:#3A2420;--watch-bg:#3A3018;--watch-ink:#FFE3A6;--shadow:rgba(0,0,0,.35);
+  color-scheme:dark}
+
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{margin:0;background:var(--bg)}
+body{color:var(--ink);font-family:var(--font-b);font-size:16px;line-height:1.45;-webkit-tap-highlight-color:transparent;-webkit-font-smoothing:antialiased}
+body.lock{overflow:hidden}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible{outline:3px solid var(--cta);outline-offset:2px}
+img{max-width:100%;display:block}
+h1,h2,h3{font-family:var(--font-d);font-weight:700;text-wrap:balance;margin:0;letter-spacing:-.01em}
+p{margin:0}
+.wrap{max-width:520px;margin:0 auto;padding-inline:16px;padding-block:calc(env(safe-area-inset-top,0px) + 6px) calc(110px + env(safe-area-inset-bottom,0px))}
+
+.top{display:flex;align-items:center;justify-content:space-between;padding-block:8px 12px}
+.brand{font-family:var(--font-d);font-weight:700;font-size:17px;display:flex;align-items:center;gap:9px}
+.brand .av{width:34px;height:34px;border-radius:12px;background:var(--brand-2);overflow:hidden;display:grid;place-items:end center}
+.brand .av svg{width:40px;margin-bottom:-14px}
+.iconbtn{width:42px;height:42px;border-radius:14px;border:0;background:var(--surface);display:grid;place-items:center;color:var(--brand)}
+.iconbtn svg{width:22px;height:22px}
+
+.hero{background:var(--brand);color:#fff;border-radius:28px;padding:20px 0 0 20px;display:grid;grid-template-columns:minmax(0,1fr) 138px;align-items:end;overflow:hidden;position:relative}
+.hero::before{content:"";position:absolute;right:-40px;top:-50px;width:210px;height:210px;border-radius:50%;background:rgba(255,255,255,.08)}
+.hero-text{padding-bottom:20px;display:grid;gap:10px;position:relative}
+.hero-name{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;opacity:.75}
+.bubble{background:#fff;color:#16302B;border-radius:18px 18px 18px 6px;padding:12px 14px;font-weight:700;font-size:15px;line-height:1.3}
+.hero .mascot{width:150px;margin:0 -12px -6px 0;position:relative}
+
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:12px}
+.stat{background:var(--surface);border-radius:20px;padding:12px;display:grid;gap:2px}
+.stat .ic{width:22px;height:22px;color:var(--brand)}
+.stat .ic.fl{color:#F08A2C}
+.stat b{font-family:var(--font-d);font-size:20px;font-variant-numeric:tabular-nums}
+.stat small{color:var(--muted);font-size:12px;font-weight:600;line-height:1.2}
+.card{background:var(--surface);border-radius:20px;padding:14px}
+.week{margin-top:10px;display:grid;gap:10px}
+.week-head{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.week-head b{font-weight:800}
+.week-head span{color:var(--muted);font-size:13px;font-weight:600}
+.days{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.day{display:grid;justify-items:center;gap:5px;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase}
+.day i{width:30px;height:30px;border-radius:50%;background:var(--surface-2);display:grid;place-items:center;color:#fff}
+.day.done i{background:var(--done)}
+.day.done i svg{width:16px;height:16px}
+.day.today i{box-shadow:0 0 0 2px var(--brand)}
+
+.sec-title{font-size:16px;margin:28px 0 4px}
+.lead{color:var(--muted);font-size:14px;font-weight:500;margin-bottom:12px}
+.eyebrow{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--brand)}
+
+.thumb{position:relative;border-radius:16px;overflow:hidden;background:var(--surface-2);aspect-ratio:16/10;max-width:100%}
+.thumb img{width:100%;height:100%;object-fit:cover}
+.thumb .pl{position:absolute;right:8px;bottom:8px;width:30px;height:30px;border-radius:50%;background:rgba(0,0,0,.55);color:#fff;display:grid;place-items:center}
+.thumb .pl svg{width:14px;height:14px;margin-left:2px}
+.thumb.sq{aspect-ratio:1}
+
+.daily{width:100%;text-align:left;border:0;background:var(--surface);border-radius:24px;padding:10px;display:grid;gap:12px;margin-top:8px}
+.daily .row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:0 6px 6px}
+.daily h3{font-size:18px;margin:3px 0 4px}
+.daily p{color:var(--muted);font-size:14px;font-weight:500}
+.go{display:inline-flex;align-items:center;gap:6px;background:var(--cta);color:var(--cta-ink);font-weight:800;border-radius:999px;padding:10px 16px 10px 12px;font-size:14px;white-space:nowrap;box-shadow:0 3px 0 var(--cta-edge)}
+.go svg{width:18px;height:18px}
+.collage{display:grid;grid-template-columns:2fr 1fr;grid-template-rows:1fr 1fr;gap:6px;aspect-ratio:16/9;max-width:100%}
+.collage .thumb{aspect-ratio:auto;border-radius:14px}
+.collage .thumb:first-child{grid-row:1/3}
+
+.hscroll{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;margin-inline:-16px;padding-inline:16px;padding-bottom:6px;scrollbar-width:none}
+.hscroll::-webkit-scrollbar{display:none}
+.pcard{flex:0 0 190px;scroll-snap-align:start;border:0;background:var(--surface);border-radius:20px;padding:8px 8px 12px;text-align:left;display:grid;gap:6px;align-content:start}
+.pcard b{font-weight:800;font-size:15px;line-height:1.2;padding:4px 4px 0}
+.pcard small{color:var(--muted);font-weight:500;font-size:13px;line-height:1.3;padding:0 4px}
+.row-cards{display:grid;gap:10px}
+.lcard{width:100%;border:0;background:var(--surface);border-radius:18px;padding:8px;display:grid;grid-template-columns:96px minmax(0,1fr) 22px;gap:12px;align-items:center;text-align:left}
+.lcard b{font-weight:800;display:block}
+.lcard small{color:var(--muted);font-weight:500;font-size:13px}
+.chev{width:22px;height:22px;color:var(--muted)}
+
+.safety{width:100%;margin-top:28px;text-align:left;background:var(--surface);border-radius:20px;padding:14px;display:grid;grid-template-columns:44px minmax(0,1fr);gap:12px;align-items:center;border:1.5px solid var(--brand)}
+.safety i{width:44px;height:44px;border-radius:14px;background:var(--brand);color:var(--brand-ink);display:grid;place-items:center}
+.safety i svg{width:24px;height:24px}
+.safety b{display:block;font-weight:800}
+.safety small{color:var(--muted);font-weight:500;font-size:13px}
+.tip{margin-top:12px;background:var(--surface-2);border-radius:18px;padding:14px;display:grid;gap:8px;font-size:14px;font-weight:500}
+.tip b{font-weight:800}
+.tip button{justify-self:start;border:0;background:transparent;color:var(--brand);font-weight:800;padding:0}
+
+h1.page{font-size:22px;margin-top:6px}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:8px}
+.secard{border:0;background:var(--surface);border-radius:20px;padding:8px 8px 12px;text-align:left;display:grid;gap:6px;align-content:start}
+.secard b{font-weight:800;font-size:15px;line-height:1.2;padding:4px 4px 0}
+.secard small{color:var(--muted);font-weight:500;font-size:12.5px;line-height:1.3;padding:0 4px}
+
+.tabbar{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--surface);border-top:1px solid var(--line);padding:8px 16px calc(8px + env(safe-area-inset-bottom,0px))}
+.tabbar .in{max-width:520px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.tab{border:0;background:transparent;display:grid;justify-items:center;gap:2px;padding:6px 0;border-radius:14px;font-size:12px;font-weight:700;color:var(--muted)}
+.tab svg{width:24px;height:24px}
+.tab[aria-current="page"]{color:var(--brand);background:var(--brand-2)}
+
+.sheet{position:fixed;inset:0;z-index:30;display:grid;align-items:end}
+.sheet .scrim{position:absolute;inset:0;background:rgba(8,20,18,.5)}
+.panel{position:relative;background:var(--bg);border-radius:26px 26px 0 0;max-height:94vh;max-height:94dvh;overflow:auto;padding:0 16px calc(24px + env(safe-area-inset-bottom,0px));width:100%;max-width:560px;margin:0 auto;animation:up .28s ease;-webkit-overflow-scrolling:touch}
+@keyframes up{from{transform:translateY(40px);opacity:.4}to{transform:none;opacity:1}}
+.panel-bar{position:sticky;top:0;z-index:2;background:var(--bg);display:flex;justify-content:space-between;align-items:center;padding:10px 0 8px}
+.grab{width:42px;height:5px;border-radius:3px;background:var(--line)}
+.panel-bar .iconbtn{width:38px;height:38px;color:var(--ink)}
+.backbtn{border:0;background:var(--surface);border-radius:999px;padding:8px 14px;font-weight:700;font-size:14px}
+.sh-head h2{font-size:21px;margin:12px 0 4px}
+.sh-head p{color:var(--muted);font-weight:500;font-size:14px}
+.panel h3{font-size:12.5px;font-weight:700;margin:20px 0 8px;font-family:var(--font-b);text-transform:uppercase;letter-spacing:.07em;color:var(--muted)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1.5px solid var(--line);background:var(--surface);border-radius:999px;padding:8px 14px;font-weight:700;font-size:14px}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.chip.bad[aria-pressed="true"]{background:var(--warn);border-color:var(--warn);color:#fff}
+.note{margin-top:10px;border-radius:14px;padding:12px;font-size:14px;font-weight:500;background:var(--surface-2)}
+.note.warn{background:var(--warn-bg);border:1.5px solid var(--warn)}
+.note b{font-weight:800}
+.exlist{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.exitem{width:100%;border:0;background:var(--surface);border-radius:16px;padding:7px;display:grid;grid-template-columns:88px minmax(0,1fr) auto;gap:12px;align-items:center;text-align:left}
+.exitem .thumb{border-radius:11px}
+.exitem b{font-weight:700;font-size:15px;display:block;line-height:1.25}
+.exitem small{color:var(--muted);font-weight:500;font-size:12.5px}
+.exitem .cnt{font-weight:800;font-size:13px;color:var(--brand);font-variant-numeric:tabular-nums;padding-right:6px}
+.exitem.out{opacity:.5}
+.sh-foot{position:sticky;bottom:calc(-24px - env(safe-area-inset-bottom,0px));background:var(--bg);padding:14px 0 calc(24px + env(safe-area-inset-bottom,0px));margin-bottom:calc(-24px - env(safe-area-inset-bottom,0px))}
+.btn{width:100%;border:0;border-radius:18px;padding:16px;background:var(--cta);color:var(--cta-ink);font-family:var(--font-d);font-weight:700;font-size:16px;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 4px 0 var(--cta-edge)}
+.btn:active{transform:translateY(2px);box-shadow:0 2px 0 var(--cta-edge)}
+.btn svg{width:20px;height:20px}
+.btn.ghost{background:var(--surface);color:var(--ink);box-shadow:0 3px 0 var(--line)}
+
+.video{position:relative;border-radius:20px;overflow:hidden;background:#000;aspect-ratio:16/9;max-width:100%}
+.video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.vnote{font-size:12.5px;color:var(--muted);font-weight:500;margin-top:6px}
+.detail h2{font-size:22px;margin:14px 0 8px}
+.tags{display:flex;flex-wrap:wrap;gap:6px}
+.tag{font-size:12px;font-weight:700;border-radius:999px;padding:4px 10px;background:var(--surface);color:var(--muted)}
+.tag.lv{color:var(--brand)}
+ol.steps{margin:0;padding:0;list-style:none;display:grid;gap:8px;counter-reset:s}
+ol.steps li{counter-increment:s;display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;background:var(--surface);border-radius:14px;padding:10px;font-weight:500}
+ol.steps li::before{content:counter(s);width:28px;height:28px;border-radius:50%;background:var(--brand);color:var(--brand-ink);display:grid;place-items:center;font-weight:800;font-size:14px}
+.callout{border-radius:14px;padding:12px;font-weight:500;font-size:14.5px;display:grid;grid-template-columns:24px minmax(0,1fr);gap:10px}
+.callout svg{width:22px;height:22px}
+.callout.watch{background:var(--watch-bg);color:var(--watch-ink)}
+.callout.why{background:var(--surface);border:1.5px solid var(--brand)}
+.callout.why svg{color:var(--brand)}
+.prose{display:grid;gap:10px;font-size:15px}
+.prose ul{margin:0;padding-left:20px;display:grid;gap:6px}
+.prose b{font-weight:800}
+
+.player{position:fixed;inset:0;z-index:40;background:var(--bg);display:flex;flex-direction:column;padding:calc(env(safe-area-inset-top,0px) + 8px) 16px calc(env(safe-area-inset-bottom,0px) + 12px);overflow:auto}
+.player>*{width:100%;max-width:520px;margin-inline:auto}
+.pl-top{display:grid;grid-template-columns:42px minmax(0,1fr) 42px;gap:12px;align-items:center}
+.pl-top .iconbtn{color:var(--ink)}
+.pl-prog{display:grid;gap:5px}
+.segs{display:flex;gap:3px}
+.segs i{flex:1;height:6px;border-radius:3px;background:var(--surface-2)}
+.segs i.d{background:var(--done)}
+.segs i.c{background:var(--brand)}
+.pl-meta{display:flex;justify-content:space-between;font-size:12px;font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums}
+.pl-media{margin-top:12px;position:relative}
+.pl-media .poster{position:absolute;inset:0;background:var(--surface-2)}
+.pl-media .poster img{width:100%;height:100%;object-fit:cover;filter:saturate(.7) brightness(.75)}
+.pl-media .poster span{position:absolute;left:12px;top:12px;background:rgba(0,0,0,.6);color:#fff;font-weight:700;font-size:13px;border-radius:999px;padding:5px 11px}
+.pl-side{position:absolute;left:10px;bottom:10px;font-size:12px;font-weight:700;background:rgba(0,0,0,.6);color:#fff;border-radius:999px;padding:5px 11px;z-index:2}
+.coach{display:grid;grid-template-columns:62px minmax(0,1fr);gap:10px;align-items:end;margin-top:10px}
+.coach .mascot{width:62px}
+.coach .bubble{background:var(--surface);color:var(--ink);box-shadow:0 2px 0 var(--shadow);margin-bottom:8px}
+.pl-info{text-align:center;padding-top:6px;display:grid;gap:3px}
+.pl-kind{font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--brand)}
+.pl-info h2{font-size:20px}
+.pl-time{font-family:var(--font-d);font-weight:700;font-size:52px;line-height:1.05;font-variant-numeric:tabular-nums}
+.pl-bar{height:8px;border-radius:4px;background:var(--surface-2);overflow:hidden;margin:4px auto 0;max-width:280px;width:100%}
+.pl-bar i{display:block;height:100%;background:var(--cta);border-radius:4px;width:0}
+.pl-cue{color:var(--muted);font-weight:600;font-size:14.5px;max-width:420px;margin:6px auto 0}
+.pl-ctrl{display:flex;justify-content:center;align-items:center;gap:22px;margin-top:12px}
+.cbtn{width:56px;height:56px;border-radius:50%;border:0;background:var(--surface);display:grid;place-items:center}
+.cbtn svg{width:26px;height:26px}
+.cbtn.main{width:76px;height:76px;background:var(--brand);color:var(--brand-ink)}
+.cbtn.main svg{width:34px;height:34px}
+.pl-pain{margin:10px auto 0;display:block;border:0;background:transparent;color:var(--warn);font-weight:700;font-size:14px;padding:6px 10px;width:auto}
+.modal{position:fixed;inset:0;z-index:60;display:grid;place-items:center;padding:16px;background:rgba(8,20,18,.55)}
+.modal .box{background:var(--bg);border-radius:24px;padding:20px;max-width:380px;width:100%;display:grid;gap:10px}
+.modal h3{font-size:18px}
+.modal p{color:var(--muted);font-weight:500;font-size:15px}
+
+.finish{position:fixed;inset:0;z-index:50;background:var(--brand);color:#fff;overflow:auto;padding:calc(env(safe-area-inset-top,0px) + 16px) 16px calc(env(safe-area-inset-bottom,0px) + 20px)}
+.finish .in{max-width:460px;margin:0 auto;display:grid;gap:14px;text-align:center}
+.finish .mascot{width:180px;margin:0 auto;display:block}
+.finish h2{font-size:26px}
+.fin-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.fin-stats div{background:rgba(255,255,255,.14);border-radius:16px;padding:10px 6px}
+.fin-stats b{display:block;font-family:var(--font-d);font-size:20px;font-variant-numeric:tabular-nums}
+.fin-stats small{font-weight:600;font-size:12px;opacity:.85}
+.fin-badge{background:#fff;color:#16302B;border-radius:18px;padding:12px;display:grid;grid-template-columns:52px minmax(0,1fr);gap:12px;align-items:center;text-align:left}
+.fin-badge b{font-weight:800;display:block}
+.fin-badge small{color:#5C716B;font-weight:500}
+.lvbox{background:rgba(255,255,255,.14);border-radius:18px;padding:12px;text-align:left;display:grid;gap:8px}
+.lvbox .bar,.lvcard .bar{height:10px;border-radius:5px;background:rgba(255,255,255,.22);overflow:hidden}
+.lvbox .bar i,.lvcard .bar i{display:block;height:100%;background:var(--cta);border-radius:5px}
+#confetti{position:fixed;inset:0;pointer-events:none;z-index:55}
+
+.lvcard{background:var(--brand);color:#fff;border-radius:24px;padding:16px;display:grid;grid-template-columns:72px minmax(0,1fr);gap:14px;align-items:center;margin-top:10px}
+.lvcard .num{width:72px;height:72px;border-radius:22px;background:var(--cta);color:var(--cta-ink);display:grid;place-items:center;font-family:var(--font-d);font-size:28px;font-weight:700}
+.lvcard b{font-family:var(--font-d);font-size:18px;display:block;margin:2px 0 8px}
+.lvcard small{font-weight:600;font-size:13px;opacity:.9}
+.lvcard .bar{margin-bottom:6px}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.cal span{font-size:11px;font-weight:700;color:var(--muted);text-align:center;text-transform:uppercase}
+.cal i{aspect-ratio:1;max-width:100%;border-radius:10px;background:var(--surface-2);display:grid;place-items:center;font-style:normal;font-size:12px;font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums}
+.cal i.on{background:var(--done);color:#fff}
+.cal i.now{box-shadow:inset 0 0 0 2px var(--brand)}
+.cal i.fut{opacity:.35}
+.badges{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:8px}
+.badge{background:var(--surface);border-radius:18px;padding:12px 8px;display:grid;justify-items:center;gap:6px;text-align:center}
+.badge svg{width:52px;height:52px}
+.badge b{font-size:13px;font-weight:800;line-height:1.2}
+.badge small{font-size:11.5px;color:var(--muted);font-weight:500;line-height:1.25}
+.badge.locked svg{filter:grayscale(1);opacity:.35}
+.badge.locked b{color:var(--muted)}
+.sync{font-size:12.5px;color:var(--muted);font-weight:500;margin-top:14px;text-align:center}
+
+/* mascot motion */
+.mascot .m-wave{transform-origin:124px 148px;animation:wave 1.3s ease-in-out infinite}
+.mascot .m-tail{transform-origin:130px 188px;animation:tail 2.6s ease-in-out infinite}
+.mascot .m-eye{transform-box:fill-box;transform-origin:center;animation:blink 4.6s infinite}
+.m-cheer .m-body{animation:hop .9s ease-in-out infinite}
+.m-calm .m-body{transform-box:fill-box;transform-origin:50% 100%;animation:breathe 4s ease-in-out infinite}
+@keyframes wave{0%,100%{transform:rotate(0)}50%{transform:rotate(-20deg)}}
+@keyframes tail{0%,100%{transform:rotate(-5deg)}50%{transform:rotate(7deg)}}
+@keyframes blink{0%,94%,100%{transform:scaleY(1)}97%{transform:scaleY(.1)}}
+@keyframes hop{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+@keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.025)}}
+@media (prefers-reduced-motion: reduce){.mascot *{animation:none!important}.panel{animation:none}}
+@media (max-height:680px){.pl-time{font-size:42px}.coach{display:none}.cbtn.main{width:64px;height:64px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand"><span class="av" id="brandAv"></span>Здоровая Спина</div>
+    <button class="iconbtn" data-a="safety" aria-label="Безопасность для спины" id="shieldBtn"></button>
+  </header>
+  <main id="view"></main>
+</div>
+<nav class="tabbar" aria-label="Разделы приложения"><div class="in" id="tabs"></div></nav>
+<div class="sheet" id="sheet" hidden><div class="scrim" data-a="close-sheet"></div><div class="panel" id="panel" role="dialog" aria-modal="true"></div></div>
+<div class="player" id="player" hidden></div>
+<div class="finish" id="finish" hidden></div>
+<div class="modal" id="modal" hidden><div class="box" id="modalBox"></div></div>
+<canvas id="confetti" hidden></canvas>
+<script>
+(function(){
+"use strict";
+function mascot(state){
+  const F='#F2A65A',FD='#DE8A3E',B='#FFE8D1',P='#F38B97',K='#2B2233',T='#1F7A6B';
+  const armDown=(x1,y1,x2,y2,c)=>`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${c}" stroke-width="17" stroke-linecap="round"/><circle cx="${x2}" cy="${y2}" r="10" fill="${c===F?'#FBC48E':'#E9A060'}"/>`;
+  const band=(x,y,ang)=>`<rect x="${x-9}" y="${y-4}" width="18" height="8" rx="3" fill="${T}" transform="rotate(${ang} ${x} ${y})"/>`;
+  let arms='';
+  if(state==='cheer'){
+    arms=`<g class="m-armL">${armDown(76,148,44,108,F)}${band(52,118,-50)}</g><g class="m-armR">${armDown(124,148,156,108,F)}${band(148,118,50)}</g>`;
+  }else if(state==='hello'){
+    arms=`${armDown(76,150,68,182,F)}<g class="m-wave">${armDown(124,148,160,112,F)}${band(151,122,48)}</g>`;
+  }else{
+    arms=`${armDown(76,150,84,184,F)}${armDown(124,150,116,184,F)}`;
+  }
+  const eyes=state==='calm'
+    ?`<path d="M75 96 Q82 89 89 96" stroke="${K}" stroke-width="3.2" fill="none" stroke-linecap="round"/><path d="M111 96 Q118 89 125 96" stroke="${K}" stroke-width="3.2" fill="none" stroke-linecap="round"/>`
+    :`<g class="m-eye"><ellipse cx="82" cy="95" rx="6.5" ry="8.5" fill="${K}"/><circle cx="84.5" cy="91" r="2.4" fill="#fff"/></g><g class="m-eye"><ellipse cx="118" cy="95" rx="6.5" ry="8.5" fill="${K}"/><circle cx="120.5" cy="91" r="2.4" fill="#fff"/></g>`;
+  const mouth=state==='cheer'
+    ?`<path d="M91 112 Q100 127 109 112 Z" fill="${K}"/><path d="M95 118 Q100 124 105 118 Q100 116 95 118Z" fill="${P}"/>`
+    :`<path d="M100 110 Q97 116 91.5 113.5" stroke="${K}" stroke-width="2.4" fill="none" stroke-linecap="round"/><path d="M100 110 Q103 116 108.5 113.5" stroke="${K}" stroke-width="2.4" fill="none" stroke-linecap="round"/>`;
+  return `<svg viewBox="0 0 200 222" class="mascot m-${state}" aria-hidden="true">
+  <ellipse cx="100" cy="214" rx="54" ry="6" fill="rgba(0,0,0,.12)"/>
+  <g class="m-body">
+  <g class="m-tail"><path d="M130 196 C176 196 188 150 172 118 C167 108 154 110 159 121 C171 146 164 176 128 180 Z" fill="${F}"/><path d="M172 118 C167 108 154 110 159 121 C161 125 163 129 164 133 C170 130 176 126 172 118Z" fill="${FD}"/></g>
+  <path d="M58 212 C54 164 70 132 100 132 C130 132 146 164 142 212 Z" fill="${F}"/>
+  <path d="M77 212 C75 178 86 154 100 154 C114 154 125 178 123 212 Z" fill="${B}"/>
+  <path d="M64 168 Q70 166 72 172 M60 186 Q67 184 69 190" stroke="${FD}" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+  <path d="M136 168 Q130 166 128 172 M140 186 Q133 184 131 190" stroke="${FD}" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+  <ellipse cx="80" cy="211" rx="15" ry="8" fill="#FBC48E"/><ellipse cx="120" cy="211" rx="15" ry="8" fill="#FBC48E"/>
+  <ellipse cx="100" cy="139" rx="30" ry="8" fill="${FD}" opacity=".55"/>
+  ${arms}
+  <path d="M54 76 C49 54 52 34 60 27 C68 27 86 42 94 52 Z" fill="${F}"/><path d="M61 64 C59 52 60 42 64 37 C70 39 80 47 85 53 Z" fill="${P}"/>
+  <path d="M146 76 C151 54 148 34 140 27 C132 27 114 42 106 52 Z" fill="${F}"/><path d="M139 64 C141 52 140 42 136 37 C130 39 120 47 115 53 Z" fill="${P}"/>
+  <ellipse cx="100" cy="94" rx="52" ry="47" fill="${F}"/>
+  <path d="M100 48 L100 60 M89 50 L91 60 M111 50 L109 60" stroke="${FD}" stroke-width="4" stroke-linecap="round"/>
+  <path d="M52 86 Q56 76 50 72 M148 86 Q144 76 150 72" stroke="${FD}" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <path d="M51 74 Q100 50 149 74 L150 84 Q100 60 50 84 Z" fill="${T}"/>
+  <ellipse cx="100" cy="115" rx="22" ry="15" fill="${B}"/>
+  ${eyes}
+  <ellipse cx="70" cy="110" rx="8" ry="5" fill="${P}" opacity=".55"/><ellipse cx="130" cy="110" rx="8" ry="5" fill="${P}" opacity=".55"/>
+  <path d="M95.5 105 Q100 102 104.5 105 Q100 111 95.5 105 Z" fill="#E0707E"/>
+  ${mouth}
+  <path d="M70 108 L48 104 M70 114 L48 116 M130 108 L152 104 M130 114 L152 116" stroke="${K}" stroke-opacity=".35" stroke-width="1.6" stroke-linecap="round"/>
+  </g></svg>`;
+}
+
+
+const EXL=[
+['march','Марш на месте',['warm','legs'],'stand',1,'alt','5euy_1A8uHQ',['Встань ровно, живот слегка подтяни.','Поочерёдно поднимай колени до комфортной высоты.','Руки двигаются в такт, дыши свободно.'],'Без прыжков: стопа ставится мягко, корпус ровный.','Мягко разогревает мышцы без ударной нагрузки на позвоночник.'],
+['stepTouch','Шаг в сторону',['warm','legs'],'stand',1,'','YF8KSKiTWLE',['Встань ровно, колени мягкие.','Шагни в сторону и приставь вторую ногу.','Повтори в другую сторону, руки двигаются в такт.'],'Никаких прыжков, только шаги.','Лёгкое кардио без ударной нагрузки на диски.'],
+['sitToStand','Присед к стулу',['legs','backchain'],'stand',1,'','0AQ29sjYfQw',['Встань перед стулом, стопы на ширине плеч.','Отведи таз назад и опускайся, пока ягодицы едва коснутся стула.','Вытолкнись пятками и встань, сжав ягодицы.'],'Спина прямая всё время. Наклон корпуса идёт от таза, без округления поясницы.','Укрепляет ягодицы и бёдра. Стул ограничивает глубину и страхует.'],
+['calfRaise','Подъём на носки',['legs'],'stand',1,'','J3qQrxPEhHA',['Встань лицом к стене или столу, держись руками.','Медленно поднимись на носки.','Плавно опустись на всю стопу.'],'Корпус ровный, не раскачивайся.','Работают икры и равновесие, позвоночник не нагружается.'],
+['standHipExt','Отведение ноги назад у опоры',['backchain','legs'],'stand',1,'split','i4rmRxPBmkY',['Встань лицом к опоре, руки на опоре.','Подтяни живот и отведи прямую ногу назад на 15–20 см.','Задержись на секунду, сжав ягодицу, и верни.'],'Маленькая амплитуда. Если поясница прогибается, нога поднята слишком высоко.','Включает ягодичные мышцы при ровной спине и без наклонов.'],
+['standCurl','Сгибание голени стоя',['backchain','legs'],'stand',1,'alt','oWu8RxtWdGE',['Встань у опоры, руки на опоре.','Согни ногу в колене, подтягивая пятку к ягодице.','Медленно опусти. Чередуй ноги.'],'Бёдра рядом, таз неподвижен.','Тренирует заднюю поверхность бедра без наклона вперёд.'],
+['wallPush','Отжимания от стены',['arms'],'stand',1,'','YWw-3rGaoT0',['Встань в шаге от стены, ладони на стене на уровне груди.','Согни локти и приблизь грудь к стене.','Оттолкнись обратно.'],'Тело одной прямой линией от пяток до макушки.','Нагружает грудь и руки, поясница при этом в покое.'],
+['wallAngel','Ангел у стены',['posture','arms'],'stand',1,'','tsW1YoYDa4s',['Встань спиной к стене: затылок и лопатки касаются стены.','Согни руки буквой W, локти и кисти у стены.','Медленно скользи руками вверх и возвращай вниз.'],'Отойди стопами на полшага от стены и слегка согни колени, так поясница не прогибается.','Выпрямляет грудной отдел и укрепляет мышцы между лопатками. Главное упражнение против холки.'],
+['chinTuck','Подбородок назад',['posture'],'stand',1,'','Mtw5H4VyhjE',['Стой ровно, взгляд вперёд.','Плавно отведи голову назад, как будто делаешь двойной подбородок.','Задержись на 2 секунды и расслабься.'],'Голову не запрокидывай и не опускай, движение строго назад.','Возвращает голову на ось и разгружает основание шеи, где формируется холка.'],
+['chinTuckSeat','Подбородок назад сидя',['posture'],'seat',1,'','7rnlAVhAK-8',['Сядь на стул, стопы на полу, спина ровная.','Отведи голову назад, вытягивая макушку вверх.','Задержись на 2 секунды и расслабься.'],'Удобно делать прямо за рабочим столом каждый час.','Снимает перегрузку шеи от позы за компьютером и телефоном.'],
+['doorStretch','Растяжка груди в проёме',['posture','stretch'],'stand',1,'split','ylvHNXnACXU',['Встань в дверной проём, предплечье на косяке, локоть на уровне плеча.','Сделай маленький шаг вперёд до лёгкого растяжения в груди.','Дыши спокойно и удерживай.'],'Поясницу не прогибай, живот слегка подтянут.','Раскрывает грудные мышцы, которые тянут плечи вперёд и формируют сутулость.'],
+['towelRow','Сведение лопаток',['posture','arms'],'stand',1,'','UHlhyti-RBQ',['Встань ровно, руки вдоль тела или вытянуты вперёд.','Сведи лопатки вместе и чуть вниз, локти тянутся назад.','Задержись на 2 секунды и расслабься.'],'Плечи вниз, подальше от ушей.','Укрепляет мышцы между лопатками, которые держат осанку.'],
+['wings','Подъём рук в стороны',['arms','posture'],'stand',1,'','ej_f6t5F-_A',['Встань ровно, руки вдоль тела.','Подними руки через стороны до уровня плеч.','Медленно опусти.'],'Плечи к ушам не поднимай. Вместо гантелей подойдут бутылки по 0,5 л.','Укрепляет плечи без нагрузки на позвоночник.'],
+['biceps','Сгибание рук с бутылками',['arms'],'stand',1,'','YWALHzq0tHg',['Встань ровно, в руках бутылки с водой.','Согни руки в локтях, поднимая бутылки к плечам.','Медленно опусти.'],'Локти прижаты к бокам, корпус не раскачивается.','Лёгкий вес в опущенных руках не нагружает поясницу.'],
+['proneY','Подъём рук лёжа',['posture','back'],'prone',1,'','DQFTp5n0uh0',['Ляг на живот, под живот подушку, лоб на сложенное полотенце.','Вытяни руки вперёд буквой Y, большие пальцы вверх.','Приподними руки на пару сантиметров, сводя лопатки, и опусти.'],'Грудь, живот и голова лежат на полу, поднимаются только руки.','Укрепляет верх спины без прогиба в пояснице.'],
+['birdDog','Птица-собака',['back','backchain'],'quad',1,'alt','tk29GRWwwuE',['Встань на четвереньки: кисти под плечами, колени под тазом.','Медленно вытяни руку вперёд и противоположную ногу назад.','Задержись на 2–3 секунды и вернись. Чередуй стороны.'],'Ногу поднимай только до уровня таза. Представь стакан воды на пояснице.','Одно из основных упражнений реабилитологов для стабилизации поясницы.'],
+['legSlide','Скольжение ноги назад',['back','backchain'],'quad',1,'alt','A2EmhlpHUtk',['Встань на четвереньки, спина ровная.','Скользи носком назад по полу, выпрямляя ногу.','Верни колено на место. Чередуй ноги.'],'Таз не заваливается в сторону, поясница не прогибается.','Мягкая версия «птицы-собаки» для начала.'],
+['catCow','Мягкая кошка',['back','stretch'],'quad',1,'','nmFiSxtGUt8',['Встань на четвереньки, спина ровная.','На выдохе мягко округли спину вверх, опусти голову.','На вдохе вернись в ровное положение, взгляд вперёд.'],'Глубоко вниз не прогибайся: только до ровной спины или чуть ниже. В видео прогиб может быть глубже — делай мягче.','Мягкая подвижность позвоночника в безопасной амплитуде.'],
+['kneePlank','Планка с колен',['back'],'quad',2,'','Vayu4fBonwU',['Встань на предплечья и колени, локти под плечами.','Отведи колени назад, чтобы тело стало прямой линией от колен до макушки.','Держи и дыши ровно.'],'Таз не проваливается и не задирается. Устала — опустись и отдохни.','Укрепляет мышцы-стабилизаторы без нагрузки полной планки.'],
+['sidePlankKnees','Боковая планка с колен',['back'],'side',2,'split','TmXkenAhqvI',['Ляг на бок, опора на предплечье, колени согнуты.','Приподними таз, чтобы тело выстроилось от колен до головы.','Задержись на 2–3 секунды, опустись. Потом другая сторона.'],'Локоть строго под плечом, корпус не заваливается вперёд.','Входит в «большую тройку» упражнений профессора Макгилла для здоровой поясницы.'],
+['deadBug','Жук',['back'],'supine',2,'alt','N_B_-f0OgaE',['Ляг на спину, руки вверх, колени над тазом, голени параллельно полу.','Медленно опусти руку за голову и вытяни противоположную ногу.','Вернись и поменяй стороны.'],'Поясница всё время прижата к полу. Отрывается — не опускай ногу так низко.','Учит держать поясницу неподвижной, пока двигаются руки и ноги.'],
+['pelvicTilt','Наклон таза лёжа',['back'],'supine',1,'','PJohJhNqPWQ',['Ляг на спину, колени согнуты, стопы на полу.','На выдохе мягко прижми поясницу к полу, напрягая живот.','На вдохе расслабься.'],'Движение маленькое, ягодицы от пола не отрываются.','Включает глубокие мышцы живота, бережно для поясницы.'],
+['heelSlide','Скольжение пяткой',['back'],'supine',1,'alt','KkinK0SJNRg',['Ляг на спину, колени согнуты.','Напряги живот и медленно скользи пяткой по полу, выпрямляя ногу.','Верни ногу. Чередуй стороны.'],'Поясница не прогибается, таз не качается.','Тренирует контроль корпуса в самом безопасном положении.'],
+['breathing','Дыхание животом',['stretch'],'supine',1,'','5AFchTB2eXE',['Ляг на спину, колени согнуты, ладони на животе.','Медленный вдох носом, живот поднимается.','Длинный выдох, живот опускается, тело расслабляется.'],'Плечи и шея расслаблены.','Снимает напряжение мышц спины и успокаивает.'],
+['bridge','Ягодичный мост',['backchain','back'],'supine',1,'','ytvP0oUDKYw',['Ляг на спину, колени согнуты, стопы на ширине таза.','Сожми ягодицы и подними таз до прямой линии от плеч до колен.','Задержись на 2 секунды и медленно опустись.'],'Поднимайся за счёт ягодиц. Выше прямой линии не прогибайся.','Укрепляет ягодицы и мышцы спины, часто назначается при болях в пояснице.'],
+['singleBridge','Мост на одной ноге',['backchain'],'supine',3,'split','9bl48SV62u4',['Ляг на спину, одна стопа на полу, вторая нога вытянута.','Подними таз, опираясь на одну ногу.','Медленно опусти. Половину времени на каждую сторону.'],'Таз ровный, без перекоса. Тяжело — делай обычный мост.','Усложнённый мост для сильных ягодиц, поясница остаётся в нейтрали.'],
+['proneCurl','Сгибание ноги лёжа',['backchain'],'prone',1,'alt','lN6NUE2IpWI',['Ляг на живот, подушка под живот, голова на руках.','Согни ногу, подтягивая пятку к ягодице.','Медленно опусти. Чередуй ноги.'],'Таз прижат к полу.','Тренирует заднюю поверхность бедра без наклонов и весов.'],
+['sideLegRaise','Отведение ноги лёжа на боку',['backchain','legs'],'side',1,'split','EwBJKBa4PKU',['Ляг на бок, голова на руке, ноги одна на другой.','Подними верхнюю ногу на 20–30 см, носок смотрит вперёд.','Медленно опусти.'],'Корпус не заваливается назад. Нижнюю ногу можно согнуть для устойчивости.','Укрепляет среднюю ягодичную мышцу: она держит таз и разгружает поясницу.'],
+['hamStretch','Растяжка бедра с полотенцем',['stretch','backchain'],'supine',1,'split','Il1L75v6gq0',['Ляг на спину, одна нога согнута, на стопу другой накинь полотенце или ремень.','Подними прямую ногу до лёгкого натяжения сзади бедра.','Держи и дыши, без рывков.'],'Поясница и таз на полу. Тяни до приятного натяжения, не до боли.','Растягивает заднюю поверхность бедра без наклона вперёд.'],
+['figure4','Растяжка «четвёрка»',['stretch','backchain'],'supine',1,'split','-g0nuyTHMrI',['Ляг на спину, колени согнуты.','Положи щиколотку одной ноги на колено другой.','Обхвати бедро опорной ноги и мягко подтяни к себе.'],'Голова и поясница остаются на полу.','Расслабляет ягодичные и грушевидную мышцу, которые часто зажаты при болях в пояснице.'],
+['kneeToChest','Колено к груди',['stretch'],'supine',1,'alt','Yd9wY25koVk',['Ляг на спину, колени согнуты.','Обхвати одно колено и мягко подтяни к груди.','Подержи 10–15 секунд и смени ногу.'],'Вторая стопа на полу, голову не поднимай. Если в пояснице неприятно — пропусти.','Мягко вытягивает поясницу в положении лёжа.'],
+['hipFlexor','Растяжка передней поверхности бедра',['stretch','legs'],'kneel',1,'split','tsGPYSQbZx4',['Встань в выпад или на одно колено (подложи полотенце), вторая стопа впереди.','Подкрути таз «хвостиком вниз» и сожми ягодицу.','Слегка подай таз вперёд и держи.'],'Корпус вертикально, поясница не прогибается. Можно держаться за стул.','Зажатые сгибатели бедра тянут поясницу в прогиб, растяжка её разгружает.'],
+['calfStretch','Растяжка икр у стены',['stretch','legs'],'stand',1,'split','i1eJqJ3v3lQ',['Встань лицом к стене, ладони на стене.','Одну ногу отставь назад, пятка прижата к полу.','Слегка согни переднее колено и держи.'],'Спина ровная, наклон идёт всем телом, без прогиба.','Снимает напряжение задней цепи ног без наклонов.'],
+['neckSide','Растяжка шеи вбок',['posture','stretch'],'stand',1,'split','F4BVCFOg5zc',['Встань или сядь ровно, плечи опущены.','Мягко наклони голову ухом к плечу.','Держи, потом смени сторону.'],'Плечо к уху не поднимай, рукой не дави.','Снимает напряжение шеи и верха плеч.'],
+['wallSit','Полуприсед у стены',['legs'],'stand',2,'','sU-OEgyFJIo',['Встань спиной к стене, стопы на шаг вперёд.','Скользи спиной вниз до неглубокого приседа.','Подержи пару секунд и медленно поднимись.'],'Поясница прижата к стене, колени над стопами, глубоко не садись.','Спина полностью на опоре: бёдра работают, позвоночник отдыхает.']
+];
+
+const IC={
+  home:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-4.5v-6h-5v6H5a1 1 0 0 1-1-1z"/></svg>',
+  grid:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><rect x="4" y="4" width="7" height="7" rx="2"/><rect x="13" y="4" width="7" height="7" rx="2"/><rect x="4" y="13" width="7" height="7" rx="2"/><rect x="13" y="13" width="7" height="7" rx="2"/></svg>',
+  medal:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3h8l-2.5 6h-3z"/><circle cx="12" cy="15" r="6"/><path d="m12 12.3.9 1.8 2 .3-1.45 1.4.35 2-1.8-.95-1.8.95.35-2-1.45-1.4 2-.3z"/></svg>',
+  shield:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 5 6v5c0 4.5 3 8 7 10 4-2 7-5.5 7-10V6z"/><path d="m9 12 2 2 4-4"/></svg>',
+  flame:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c1 3.5 5 6 5 11a5 5 0 0 1-10 0c0-2.2 1-3.8 2.2-5 .2 1.6 1 2.6 2 3-.6-3 0-6 .8-9z"/></svg>',
+  clock:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>',
+  star:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg>',
+  play:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/></svg>',
+  pause:'<svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4.5" height="14" rx="1.5"/><rect x="13.5" y="5" width="4.5" height="14" rx="1.5"/></svg>',
+  next:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 6.2v11.6a1 1 0 0 0 1.55.83L15 13v4.5a1 1 0 0 0 2 0v-11a1 1 0 0 0-2 0V11L6.55 5.37A1 1 0 0 0 5 6.2z"/></svg>',
+  prev:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.2v11.6a1 1 0 0 1-1.55.83L9 13v4.5a1 1 0 0 1-2 0v-11a1 1 0 0 1 2 0V11l8.45-5.63A1 1 0 0 1 19 6.2z"/></svg>',
+  close:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>',
+  sound:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"/></svg>',
+  mute:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="m16 9.5 5 5M21 9.5l-5 5"/></svg>',
+  chev:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg>',
+  check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>',
+  eye:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/></svg>'
+};
+
+/* ============ data ============ */
+const EX={};
+EXL.forEach(r=>{EX[r[0]]={id:r[0],name:r[1],sec:r[2],pos:r[3],lvl:r[4],sides:r[5],yt:r[6],steps:r[7],cue:r[8],why:r[9]}});
+const thumbUrl=id=>`https://i.ytimg.com/vi/${id}/mqdefault.jpg`;
+const embedUrl=(id,o)=>{const p=new URLSearchParams(Object.assign({playsinline:1,rel:0,modestbranding:1,enablejsapi:1,hl:'ru'},o||{}));return `https://www.youtube-nocookie.com/embed/${id}?${p}`};
+const thumb=(id,cls,play)=>`<div class="thumb ${cls||''}"><img src="${thumbUrl(EX[id].yt)}" alt="" loading="lazy" decoding="async" onerror="this.style.opacity=0">${play?`<span class="pl">${IC.play}</span>`:''}</div>`;
+
+const SECTIONS=[
+  {id:'back',name:'Спина',sub:'Кор и стабилизация поясницы',thumb:'birdDog'},
+  {id:'backchain',name:'Задняя поверхность ног',sub:'Ягодицы и бёдра сзади',thumb:'bridge'},
+  {id:'posture',name:'Холка и осанка',sub:'Шея, плечи, лопатки',thumb:'wallAngel'},
+  {id:'legs',name:'Ноги',sub:'Бёдра, икры, равновесие',thumb:'sitToStand'},
+  {id:'arms',name:'Руки и плечи',sub:'Без нагрузки на спину',thumb:'wallPush'},
+  {id:'stretch',name:'Растяжка',sub:'Расслабление и гибкость',thumb:'hamStretch'}
+];
+SECTIONS.forEach(s=>{s.pool=Object.keys(EX).filter(id=>EX[id].sec.includes(s.id))});
+const SEC_BY=Object.fromEntries(SECTIONS.map(s=>[s.id,s]));
+const PROGRAMS=[
+  {id:'gentle',name:'Мягкий старт',sub:'Для дней, когда спина капризничает',cat:'back',def:10,thumbs:['pelvicTilt','bridge','catCow'],
+   pool:['pelvicTilt','heelSlide','bridge','catCow','legSlide','proneCurl','kneeToChest','breathing']},
+  {id:'backStrong',name:'Сильная спина',sub:'Мышцы, которые держат поясницу',cat:'back',def:15,thumbs:['birdDog','sidePlankKnees','deadBug'],
+   pool:['catCow','birdDog','kneePlank','sidePlankKnees','proneY','deadBug','bridge','breathing']},
+  {id:'glutes',name:'Ягодицы и бёдра',sub:'Вся задняя поверхность ног',cat:'backchain',def:15,thumbs:['bridge','standHipExt','sideLegRaise'],
+   pool:['standHipExt','standCurl','sitToStand','sideLegRaise','proneCurl','bridge','singleBridge','hamStretch','figure4']},
+  {id:'posture',name:'Осанка и холка',sub:'Шея, плечи и верх спины',cat:'posture',def:10,thumbs:['wallAngel','chinTuck','doorStretch'],
+   pool:['chinTuck','wallAngel','towelRow','doorStretch','neckSide','proneY','chinTuckSeat']},
+  {id:'fullBack',name:'Вся задняя сторона',sub:'Верх спины, поясница, ягодицы, бёдра',cat:'back',def:20,thumbs:['legSlide','towelRow','proneCurl'],
+   pool:['towelRow','wallAngel','standHipExt','birdDog','legSlide','sideLegRaise','proneY','proneCurl','bridge','deadBug','hamStretch','figure4']},
+  {id:'morning',name:'Утренняя зарядка',sub:'Проснуться и выпрямиться',cat:'mixed',def:5,thumbs:['catCow','chinTuck','calfRaise'],
+   pool:['chinTuck','towelRow','calfRaise','sitToStand','catCow','birdDog','bridge']},
+  {id:'whole',name:'Всё тело',sub:'Понемногу из каждого раздела',cat:'mixed',def:30,thumbs:['wallPush','sitToStand','birdDog'],
+   pool:['sitToStand','wallPush','towelRow','wallAngel','calfRaise','standHipExt','birdDog','kneePlank','sideLegRaise','proneY','bridge','deadBug','hamStretch','figure4']}
+];
+const PROG_BY=Object.fromEntries(PROGRAMS.map(p=>[p.id,p]));
+const DAILY=['backStrong','glutes','posture','fullBack','gentle'];
+const BACK_SIDE=['fullBack','backStrong','glutes','gentle'];
+
+/* ============ Telegram ============ */
+const TG=(window.Telegram&&Telegram.WebApp&&Telegram.WebApp.platform&&Telegram.WebApp.platform!=='unknown')?Telegram.WebApp:null;
+const hasCloud=!!(TG&&TG.CloudStorage&&TG.isVersionAtLeast&&TG.isVersionAtLeast('6.9'));
+function haptic(kind){try{if(!TG||!TG.HapticFeedback)return;if(kind==='success')TG.HapticFeedback.notificationOccurred('success');else TG.HapticFeedback.impactOccurred(kind||'light')}catch(e){}}
+if(TG){
+  try{TG.ready();TG.expand();if(TG.disableVerticalSwipes)TG.disableVerticalSwipes();
+    document.documentElement.setAttribute('data-theme',TG.colorScheme==='dark'?'dark':'light');
+    const paint=()=>{const bg=getComputedStyle(document.documentElement).getPropertyValue('--bg').trim();try{TG.setHeaderColor(bg);TG.setBackgroundColor(bg)}catch(e){}};
+    paint();
+    TG.onEvent('themeChanged',()=>{document.documentElement.setAttribute('data-theme',TG.colorScheme==='dark'?'dark':'light');paint()});
+  }catch(e){}
+}
+
+/* ============ storage ============ */
+const KEY='zdorovaya-spina-v2';
+let store={log:[],settings:{sound:true,mode:'normal'},tipHidden:false};
+function mergeIn(s){if(!s||typeof s!=='object')return;store=Object.assign({log:[],tipHidden:false},s);store.settings=Object.assign({sound:true,mode:'normal'},s.settings||{});if(!Array.isArray(store.log))store.log=[]}
+try{mergeIn(JSON.parse(localStorage.getItem(KEY)))}catch(e){}
+let cloudTimer=0;
+function save(){
+  try{localStorage.setItem(KEY,JSON.stringify(store))}catch(e){}
+  if(!hasCloud)return;
+  clearTimeout(cloudTimer);
+  cloudTimer=setTimeout(()=>{try{
+    const s=JSON.stringify(store);const parts=[];for(let i=0;i<s.length;i+=3500)parts.push(s.slice(i,i+3500));
+    parts.forEach((p,i)=>TG.CloudStorage.setItem('c'+i,p));
+    TG.CloudStorage.setItem('n',String(parts.length));
+  }catch(e){}},300);
+}
+function loadCloud(){
+  if(!hasCloud)return;
+  try{TG.CloudStorage.getItem('n',(err,n)=>{
+    n=parseInt(n,10);if(err||!n)return save();
+    const keys=Array.from({length:n},(_,i)=>'c'+i);
+    TG.CloudStorage.getItems(keys,(err2,vals)=>{
+      if(err2||!vals)return;
+      try{const cloud=JSON.parse(keys.map(k=>vals[k]||'').join(''));
+        if(cloud&&Array.isArray(cloud.log)&&cloud.log.length>=store.log.length){mergeIn(cloud);try{localStorage.setItem(KEY,JSON.stringify(store))}catch(e){}if(!PL.timer)render()}
+        else save();
+      }catch(e){}
+    });
+  })}catch(e){}
+}
+
+/* ============ stats ============ */
+const pad=n=>String(n).padStart(2,'0');
+const dkey=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+const addDays=(d,n)=>{const x=new Date(d);x.setDate(x.getDate()+n);return x};
+const monday=d=>{const x=new Date(d.getFullYear(),d.getMonth(),d.getDate());const w=(x.getDay()+6)%7;return addDays(x,-w)};
+function stats(){
+  const log=store.log||[];const days=new Set(log.map(l=>l.d));
+  let min=0,maxMin=0,early=false;const cat={back:0,backchain:0,posture:0,legs:0,arms:0,stretch:0,mixed:0};const secs=new Set();const weeks={};
+  log.forEach(l=>{min+=l.min;maxMin=Math.max(maxMin,l.min);if(new Date(l.ts).getHours()<9)early=true;cat[l.cat]=(cat[l.cat]||0)+1;if(l.kind==='sec')secs.add(l.id);
+    const wk=dkey(monday(new Date(l.ts)));weeks[wk]=(weeks[wk]||0)+1});
+  const now=new Date();let d=days.has(dkey(now))?now:addDays(now,-1);let cur=0;while(days.has(dkey(d))){cur++;d=addDays(d,-1)}
+  const sorted=[...days].sort();let best=0,run=0,prev=null;
+  sorted.forEach(k=>{const dt=new Date(k+'T12:00:00');if(prev&&Math.round((dt-prev)/864e5)===1)run++;else run=1;best=Math.max(best,run);prev=dt});
+  return{count:log.length,days,min,maxMin,early,cat,secs:secs.size,cur,best,week3:Object.values(weeks).some(v=>v>=3),thisWeek:weeks[dkey(monday(now))]||0};
+}
+const LEVELS=[[0,'Росток'],[100,'Бодрячок'],[300,'Ровная спинка'],[600,'Крепкий кор'],[1000,'Гибкая кошка'],[1600,'Сильная спина'],[2400,'Звезда осанки'],[3500,'Чемпионка'],[5000,'Легенда']];
+function level(xp){let i=0;while(i<LEVELS.length-1&&xp>=LEVELS[i+1][0])i++;const next=LEVELS[i+1];return{n:i+1,name:LEVELS[i][1],xp,from:LEVELS[i][0],to:next?next[0]:null}}
+const BADGES=[
+  {id:'first',name:'Первый шаг',desc:'Первая тренировка',c:'#2FA37F',t:s=>s.count>=1},
+  {id:'week3',name:'Ритм',desc:'3 тренировки за неделю',c:'#1F7A6B',t:s=>s.week3},
+  {id:'s3',name:'Три дня подряд',desc:'Серия 3 дня',c:'#F08A2C',t:s=>s.best>=3},
+  {id:'s7',name:'Неделя силы',desc:'Серия 7 дней',c:'#E8706A',t:s=>s.best>=7},
+  {id:'s21',name:'Привычка',desc:'21 день подряд',c:'#C2477A',t:s=>s.best>=21},
+  {id:'back5',name:'Крепкая поясница',desc:'5 тренировок спины',c:'#2FA37F',t:s=>s.cat.back>=5},
+  {id:'post5',name:'Прощай, холка',desc:'5 тренировок осанки',c:'#4A63C9',t:s=>s.cat.posture>=5},
+  {id:'glute5',name:'Крепкий тыл',desc:'5 тренировок ног сзади',c:'#9B59D0',t:s=>s.cat.backchain>=5},
+  {id:'m60',name:'Первый час',desc:'60 минут всего',c:'#F0B52C',t:s=>s.min>=60},
+  {id:'m300',name:'Пять часов',desc:'300 минут всего',c:'#E09A12',t:s=>s.min>=300},
+  {id:'long',name:'Марафонка',desc:'Тренировка 30 минут',c:'#E8706A',t:s=>s.maxMin>=30},
+  {id:'early',name:'Ранняя пташка',desc:'Тренировка до 9 утра',c:'#F08A2C',t:s=>s.early},
+  {id:'explorer',name:'Исследовательница',desc:'Все 6 разделов',c:'#1F7A6B',t:s=>s.secs>=6}
+];
+const badgeSVG=b=>`<svg viewBox="0 0 52 52" aria-hidden="true"><path d="M17 2h18l-4 14H21z" fill="${b.c}" opacity=".55"/><circle cx="26" cy="31" r="18" fill="${b.c}"/><circle cx="26" cy="31" r="13" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="2"/><path d="m26 22.5 2.7 5.4 6 .9-4.35 4.2 1 6-5.35-2.8-5.35 2.8 1-6-4.35-4.2 6-.9z" fill="#fff"/></svg>`;
+const plural=(n,a,b,c)=>{const m10=n%10,m100=n%100;return m10===1&&m100!==11?a:(m10>=2&&m10<=4&&(m100<10||m100>=20)?b:c)};
+
+const PH={
+  start:['Поехали! Спина скажет спасибо.','Ты уже здесь, это половина дела.','Медленно и красиво, договорились?'],
+  mid:['Отлично держишь спину!','Дыши ровно, ты молодец.','Медленно и аккуратно, так и надо.','Каждое движение — забота о себе.','Мышцы просыпаются!','Так держать!','Красивая техника!','Ты сильнее, чем вчера.','Мур! Вот это стараешься.'],
+  end:['Ещё чуть-чуть!','Последние секунды!','Дожимаем красиво!'],
+  rest:['Передохни, расслабь плечи.','Сделай глоток воды.','Отличная работа! Посмотри, что дальше.','Подыши спокойно.'],
+  fin:['Ты сделала это!','Спина в восторге!','Шаг за шагом к сильной спине!','Мур-р! Вот это забота о себе!']
+};
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+function greet(st,today){
+  const h=new Date().getHours();
+  if(today) return 'Сегодня ты уже позанималась. Горжусь тобой, мур!';
+  if(!st.count) return 'Привет! Я Тося. Будем беречь спину вместе?';
+  if(st.cur>0) return `Серия ${st.cur} ${plural(st.cur,'день','дня','дней')}! Не дадим ей прерваться?`;
+  if(h<11) return 'Доброе утро! Пять минут для спины?';
+  if(h>=21) return 'Вечерняя растяжка перед сном? Спине понравится.';
+  return 'Рада тебя видеть! Чуть-чуть движения, и спине легче.';
+}
+
+/* ============ plan builder ============ */
+const POS_ORDER={stand:0,seat:1,kneel:2,quad:3,side:4,prone:5,supine:6};
+function buildPlan(pool,minutes,mode,pain){
+  const soft=mode==='soft'||pain==='ache';
+  const W=soft?30:40,R=soft?20:15,T=10,C=45;
+  if(pain==='bad'){
+    return[{type:'prep',ex:'breathing',dur:8},{type:'work',ex:'breathing',dur:90,phase:'Расслабление'},{type:'rest',ex:'pelvicTilt',dur:T},{type:'work',ex:'pelvicTilt',dur:40,phase:'Расслабление'},{type:'rest',ex:'breathing',dur:T},{type:'work',ex:'breathing',dur:90,phase:'Расслабление'}];
+  }
+  let ids=pool.filter(id=>EX[id]);
+  if(pain==='ache') ids=ids.filter(id=>EX[id].lvl===1);
+  if(!ids.length) ids=['pelvicTilt','bridge','breathing'];
+  const stretches=ids.filter(id=>EX[id].sec.includes('stretch'));
+  let cool=stretches.length?stretches.slice(-(minutes>=15?2:1)):['breathing'];
+  if(minutes>=20&&!cool.includes('breathing'))cool=[...cool.slice(-1),'breathing'];
+  let main=ids.filter(id=>!cool.includes(id));
+  if(main.length<2) main=ids.slice();
+  main.sort((a,b)=>POS_ORDER[EX[a].pos]-POS_ORDER[EX[b].pos]);
+  const warm=minutes<=5?['march']:['march','stepTouch'];
+  const exDur=(id,base)=>EX[id].sides==='split'?Math.round(base*1.5/5)*5:base;
+  const steps=[];
+  warm.forEach((id,i)=>{if(i)steps.push({type:'rest',dur:T});steps.push({type:'work',ex:id,dur:40,phase:'Разминка'})});
+  let used=8+warm.length*40+(warm.length-1)*T;
+  cool.forEach(id=>{used+=T+exDur(id,C)});
+  let rem=minutes*60-used,j=0;
+  while(j<200){const id=main[j%main.length];const d=exDur(id,W);if(rem<d+R&&(j>0||rem<20))break;steps.push({type:'rest',dur:R});steps.push({type:'work',ex:id,dur:d,phase:'Упражнение'});rem-=d+R;j++}
+  cool.forEach(id=>{steps.push({type:'rest',dur:T});steps.push({type:'work',ex:id,dur:exDur(id,C),phase:'Заминка'})});
+  for(let i=0;i<steps.length;i++){if(steps[i].type==='rest')steps[i].ex=steps[i+1].ex}
+  steps.unshift({type:'prep',ex:steps[0].ex,dur:8});
+  return steps;
+}
+const fmt=s=>{s=Math.max(0,Math.ceil(s));return Math.floor(s/60)+':'+pad(s%60)};
+const planSec=steps=>steps.reduce((a,s)=>a+s.dur,0);
+const levelName=l=>l===1?'Легко':l===2?'Средне':'Посложнее';
+
+/* ============ views ============ */
+const $=s=>document.querySelector(s);
+let tab='home';
+function weekStrip(st){
+  const m=monday(new Date());const today=dkey(new Date());
+  return ['Пн','Вт','Ср','Чт','Пт','Сб','Вс'].map((n,i)=>{const k=dkey(addDays(m,i));const done=st.days.has(k);return `<div class="day${done?' done':''}${k===today?' today':''}"><i>${done?IC.check:''}</i>${n}</div>`}).join('');
+}
+const collage=p=>`<div class="collage">${p.thumbs.map(id=>thumb(id)).join('')}</div>`;
+function vHome(){
+  const st=stats();const lv=level(st.min*10);const today=st.days.has(dkey(new Date()));
+  const n=new Date();const dayIdx=Math.floor(new Date(n.getFullYear(),n.getMonth(),n.getDate())/864e5);
+  const prog=PROG_BY[DAILY[dayIdx%DAILY.length]];
+  return `
+  <section class="hero">
+    <div class="hero-text"><span class="hero-name">Тося говорит</span><p class="bubble">${greet(st,today)}</p></div>
+    ${mascot(today?'cheer':'hello')}
+  </section>
+  <div class="stats">
+    <div class="stat"><span class="ic fl">${IC.flame}</span><b>${st.cur}</b><small>${plural(st.cur,'день','дня','дней')} подряд</small></div>
+    <div class="stat"><span class="ic">${IC.clock}</span><b>${st.min}</b><small>${plural(st.min,'минута','минуты','минут')} всего</small></div>
+    <div class="stat"><span class="ic">${IC.star}</span><b>${lv.n}</b><small>${lv.name}</small></div>
+  </div>
+  <div class="card week">
+    <div class="week-head"><b>Эта неделя</b><span>${Math.min(st.thisWeek,3)} из 3 тренировок</span></div>
+    <div class="days">${weekStrip(st)}</div>
+  </div>
+  <h2 class="sec-title">Тренировка дня</h2>
+  <button class="daily" data-a="open" data-kind="prog" data-id="${prog.id}">
+    ${collage(prog)}
+    <div class="row"><div><span class="eyebrow">${prog.def} минут</span><h3>${prog.name}</h3><p>${prog.sub}</p></div><span class="go">${IC.play}Начать</span></div>
+  </button>
+  <h2 class="sec-title">Вся задняя сторона тела</h2>
+  <p class="lead">Спина, ягодицы и бёдра сзади: четыре программы, чтобы чередовать.</p>
+  <div class="hscroll">${BACK_SIDE.map(id=>{const p=PROG_BY[id];return `<button class="pcard" data-a="open" data-kind="prog" data-id="${p.id}">${thumb(p.thumbs[0])}<b>${p.name}</b><small>${p.sub}</small></button>`}).join('')}</div>
+  <h2 class="sec-title">Ещё программы</h2>
+  <div class="row-cards">${['posture','morning','whole'].map(id=>{const p=PROG_BY[id];return `<button class="lcard" data-a="open" data-kind="prog" data-id="${p.id}">${thumb(p.thumbs[0])}<div><b>${p.name}</b><small>${p.sub}</small></div><span class="chev">${IC.chev}</span></button>`}).join('')}</div>
+  <button class="safety" data-a="safety"><i>${IC.shield}</i><div><b>Бережно к пояснице</b><small>Все упражнения подобраны с учётом остеохондроза. Что исключено и когда остановиться</small></div></button>
+  ${store.tipHidden||TG?'':`<div class="tip"><b>Как поставить на айфон</b><span>Открой ссылку в Safari, нажми «Поделиться», затем «На экран „Домой“». Приложение будет открываться с иконки, как обычное.</span><button data-a="hide-tip">Понятно</button></div>`}
+  <p class="sync">${hasCloud?'Прогресс сохраняется в твоём Телеграме и не пропадёт при смене телефона.':'Прогресс хранится на этом телефоне.'}</p>`;
+}
+function vSections(){
+  return `<h1 class="page">Разделы</h1><p class="lead">Выбери, что хочешь проработать, и время от 5 до 30 минут.</p>
+  <div class="grid2">${SECTIONS.map(s=>`<button class="secard" data-a="open" data-kind="sec" data-id="${s.id}">${thumb(s.thumb)}<b>${s.name}</b><small>${s.sub} · ${s.pool.length} упр.</small></button>`).join('')}</div>
+  <h2 class="sec-title">Все упражнения</h2><p class="lead">Нажми, чтобы посмотреть видео и технику.</p>
+  <ul class="exlist">${Object.values(EX).map(e=>`<li><button class="exitem" data-a="ex" data-id="${e.id}">${thumb(e.id,'',true)}<div><b>${e.name}</b><small>${levelName(e.lvl)}</small></div><span class="chev">${IC.chev}</span></button></li>`).join('')}</ul>`;
+}
+function vAwards(){
+  const st=stats();const lv=level(st.min*10);
+  const pct=lv.to?Math.round(100*(lv.xp-lv.from)/(lv.to-lv.from)):100;
+  const m=monday(addDays(new Date(),-21));const today=dkey(new Date());
+  let cal=['Пн','Вт','Ср','Чт','Пт','Сб','Вс'].map(n=>`<span>${n}</span>`).join('');
+  for(let i=0;i<28;i++){const d=addDays(m,i);const k=dkey(d);cal+=`<i class="${st.days.has(k)?'on':''}${k===today?' now':''}${k>today?' fut':''}">${d.getDate()}</i>`}
+  return `<h1 class="page">Награды</h1>
+  <div class="lvcard"><div class="num">${lv.n}</div><div><small>Уровень</small><b>${lv.name}</b><div class="bar"><i style="width:${pct}%"></i></div><small>${lv.to?`${lv.xp} из ${lv.to} звёзд до следующего уровня`:`${lv.xp} звёзд, максимальный уровень!`}</small></div></div>
+  <div class="stats"><div class="stat"><span class="ic">${IC.check}</span><b>${st.count}</b><small>${plural(st.count,'тренировка','тренировки','тренировок')}</small></div>
+  <div class="stat"><span class="ic">${IC.clock}</span><b>${st.min}</b><small>минут всего</small></div>
+  <div class="stat"><span class="ic fl">${IC.flame}</span><b>${st.best}</b><small>лучшая серия</small></div></div>
+  <h2 class="sec-title">Последние 4 недели</h2>
+  <div class="card"><div class="cal">${cal}</div></div>
+  <h2 class="sec-title">Значки</h2>
+  <p class="lead">Получено ${BADGES.filter(b=>b.t(st)).length} из ${BADGES.length}. За каждую минуту тренировки — 10 звёзд.</p>
+  <div class="badges">${BADGES.map(b=>`<div class="badge${b.t(st)?'':' locked'}">${badgeSVG(b)}<b>${b.name}</b><small>${b.desc}</small></div>`).join('')}</div>`;
+}
+function renderTabs(){
+  const T=[['home','Сегодня',IC.home],['sections','Разделы',IC.grid],['awards','Награды',IC.medal]];
+  $('#tabs').innerHTML=T.map(([id,n,ic])=>`<button class="tab" data-a="tab" data-id="${id}" ${tab===id?'aria-current="page"':''}>${ic}${n}</button>`).join('');
+}
+function render(){
+  $('#view').innerHTML=tab==='home'?vHome():tab==='sections'?vSections():vAwards();
+  renderTabs();
+}
+
+/* ============ sheet ============ */
+let SS=null;
+function backBtn(on){try{if(!TG||!TG.BackButton)return;if(on)TG.BackButton.show();else TG.BackButton.hide()}catch(e){}}
+function openSheet(){$('#sheet').hidden=false;document.body.classList.add('lock');backBtn(true)}
+function closeSheet(){$('#panel').innerHTML='';$('#sheet').hidden=true;document.body.classList.remove('lock');SS=null;backBtn(false);render()}
+function startInfo(){
+  if(SS.kind==='prog'){const p=PROG_BY[SS.id];return{name:p.name,sub:p.sub,pool:p.pool,thumbs:p.thumbs,eyebrow:'Программа',cat:p.cat}}
+  const s=SEC_BY[SS.id];return{name:s.name,sub:s.sub,pool:s.pool,thumbs:[s.thumb].concat(s.pool.filter(x=>x!==s.thumb).slice(0,2)),eyebrow:'Раздел',cat:s.id};
+}
+function renderStart(){
+  const info=startInfo();
+  const steps=buildPlan(info.pool,SS.min,SS.mode,SS.pain);
+  const counts={};steps.forEach(s=>{if(s.type==='work')counts[s.ex]=(counts[s.ex]||0)+1});
+  const warmIds=Object.keys(counts).filter(id=>!info.pool.includes(id));
+  const listIds=SS.pain==='bad'?['breathing','pelvicTilt']:[...new Set([...warmIds,...info.pool])];
+  const chip=(g,v,l,cls)=>`<button class="chip${cls?' '+cls:''}" data-a="chip" data-g="${g}" data-v="${v}" aria-pressed="${String(SS[g])===String(v)}">${l}</button>`;
+  let painNote='';
+  if(SS.pain==='ache') painNote=`<div class="note">Включён мягкий режим: только лёгкие упражнения, короче подходы, длиннее отдых. Двигайся в комфортной амплитуде.</div>`;
+  if(SS.pain==='bad') painNote=`<div class="note warn"><b>Сегодня лучше не тренироваться.</b> При обострении нужен покой и врач. Если боль отдаёт в ногу, есть онемение, покалывание или слабость в ноге, обратись к неврологу как можно скорее. Можно сделать только спокойное дыхание лёжа, если оно не усиливает боль.</div>`;
+  const total=Math.round(planSec(steps)/60);
+  $('#panel').innerHTML=`
+    <div class="panel-bar"><span style="width:38px"></span><div class="grab"></div><button class="iconbtn" data-a="close-sheet" aria-label="Закрыть">${IC.close}</button></div>
+    <div class="sh-head"><div class="collage">${info.thumbs.map(id=>thumb(id)).join('')}</div><span class="eyebrow" style="display:block;margin-top:14px">${info.eyebrow}</span><h2 style="margin-top:4px">${info.name}</h2><p>${info.sub}</p></div>
+    <h3>Как спина сегодня?</h3>
+    <div class="chips">${chip('pain','ok','Хорошо')}${chip('pain','ache','Немного ноет')}${chip('pain','bad','Сильно болит','bad')}</div>
+    ${painNote}
+    ${SS.pain==='bad'?'':`<h3>Время</h3><div class="chips">${[5,10,15,20,30].map(m=>chip('min',m,m+' мин')).join('')}</div>
+    <h3>Темп</h3><div class="chips">${chip('mode','soft','Мягко · 30 с')}${chip('mode','normal','Обычно · 40 с')}</div>`}
+    <h3>Упражнения</h3>
+    <ul class="exlist">${listIds.map(id=>{const e=EX[id];const c=counts[id]||0;return `<li><button class="exitem${c?'':' out'}" data-a="ex" data-id="${id}">${thumb(id,'',true)}<div><b>${e.name}</b><small>${c?(warmIds.includes(id)?'Разминка':levelName(e.lvl)):(SS.pain==='ache'&&e.lvl>1?'Пропустим сегодня':'Не вошло по времени')}</small></div><span class="cnt">${c?'×'+c:''}</span></button></li>`}).join('')}</ul>
+    <div class="sh-foot"><button class="btn" data-a="start">${IC.play}${SS.pain==='bad'?'Только дыхание · 4 мин':'Начать · '+total+' мин'}</button></div>`;
+}
+function renderDetail(id){
+  const e=EX[id];
+  const sideTxt=e.sides==='alt'?'Чередуй стороны':e.sides==='split'?'Половина времени на каждую сторону':'';
+  const posTxt={stand:'Стоя',seat:'Сидя',kneel:'На колене',quad:'На четвереньках',side:'Лёжа на боку',prone:'Лёжа на животе',supine:'Лёжа на спине'}[e.pos];
+  $('#panel').innerHTML=`
+    <div class="panel-bar">${SS&&SS.kind?`<button class="backbtn" data-a="sheet-back">← Назад</button>`:'<span style="width:38px"></span>'}<div class="grab"></div><button class="iconbtn" data-a="close-sheet" aria-label="Закрыть">${IC.close}</button></div>
+    <div class="detail">
+      <div class="video"><iframe src="${embedUrl(e.yt)}" title="${e.name}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div>
+      <p class="vnote">В некоторых видео говорят по-английски. Смотри на движения и сверяйся с описанием ниже: оно главное.</p>
+      <h2>${e.name}</h2>
+      <div class="tags"><span class="tag">${posTxt}</span><span class="tag lv">${levelName(e.lvl)}</span>${sideTxt?`<span class="tag">${sideTxt}</span>`:''}</div>
+      <h3>Как делать</h3>
+      <ol class="steps">${e.steps.map(s=>`<li>${s}</li>`).join('')}</ol>
+      <h3>Следи</h3>
+      <div class="callout watch">${IC.eye}<span>${e.cue}</span></div>
+      <h3>Почему подходит при остеохондрозе</h3>
+      <div class="callout why">${IC.shield}<span>${e.why}</span></div>
+    </div>`;
+  $('#panel').scrollTop=0;
+}
+function renderSafety(){
+  $('#panel').innerHTML=`
+    <div class="panel-bar"><span style="width:38px"></span><div class="grab"></div><button class="iconbtn" data-a="close-sheet" aria-label="Закрыть">${IC.close}</button></div>
+    <div class="prose">
+      <h2 style="font-size:21px">Бережно к пояснице</h2>
+      <p>Упражнения подобраны по общим принципам ЛФК при поясничном остеохондрозе: позвоночник в нейтральном положении, без осевой нагрузки, ударов и скручиваний. Для холки добавлены упражнения на шею, лопатки и грудной отдел.</p>
+      <h3>Как заниматься</h3>
+      <ul>
+        <li>Двигайся медленно, без рывков и инерции.</li>
+        <li>Лёгкое усилие в мышцах — нормально. <b>Боль — сигнал остановиться</b> и пропустить упражнение.</li>
+        <li>Дыши ровно, не задерживай дыхание.</li>
+        <li>Первые две недели выбирай темп «Мягко».</li>
+        <li>Если в видео амплитуда больше, чем в описании, делай по описанию: меньше и мягче.</li>
+      </ul>
+      <h3>Когда не тренироваться</h3>
+      <div class="note warn"><b>Остановись и обратись к врачу,</b> если боль острая или усиливается, отдаёт в ногу, появилось онемение, покалывание, слабость в ноге, нарушения мочеиспускания. Во время обострения не тренируйся.</div>
+      <h3>Чего здесь специально нет</h3>
+      <ul>
+        <li><b>Скручиваний и подъёмов корпуса</b> («пресс» лёжа): сильно давят на диски.</li>
+        <li><b>Наклонов вперёд с прямыми ногами</b> и наклонов с весом.</li>
+        <li><b>Прыжков, бега, бёрпи:</b> ударная нагрузка.</li>
+        <li><b>Скручиваний корпуса</b> (повороты сидя, «русские скручивания»).</li>
+        <li><b>«Лодочки», «супермена» и глубоких прогибов:</b> сжимают поясничный отдел.</li>
+        <li><b>Подъёма прямых ног лёжа на спине.</b></li>
+        <li><b>Веса на плечах и над головой, «берёзки», «плуга».</b></li>
+      </ul>
+      <h3>Важно</h3>
+      <p>Приложение не заменяет врача. Покажи список упражнений неврологу или инструктору ЛФК: он подтвердит, что они подходят именно тебе. Если спина болит без понятной причины, это тоже стоит проверить у врача.</p>
+    </div>`;
+  $('#panel').scrollTop=0;
+}
+
+/* ============ sound ============ */
+let AC=null;
+function beep(f,d){if(!store.settings.sound)return;try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();const o=AC.createOscillator(),g=AC.createGain();o.type='sine';o.frequency.value=f||880;o.connect(g);g.connect(AC.destination);const t=AC.currentTime;g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.22,t+.01);g.gain.exponentialRampToValueAtTime(.0001,t+(d||.13));o.start(t);o.stop(t+(d||.13)+.03)}catch(e){}}
+function say(t){if(!store.settings.sound)return;try{if(!window.speechSynthesis)return;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='ru-RU';u.rate=1.02;speechSynthesis.speak(u)}catch(e){}}
+let wake=null;
+async function wakeOn(){try{if(navigator.wakeLock)wake=await navigator.wakeLock.request('screen')}catch(e){wake=null}}
+function wakeOff(){try{if(wake)wake.release()}catch(e){}wake=null}
+
+/* ============ player ============ */
+const PL={timer:null};
+function ytCmd(func){try{const f=$('#plVid');if(f&&f.contentWindow)f.contentWindow.postMessage(JSON.stringify({event:'command',func,args:[]}),'*')}catch(e){}}
+function plStart(steps,meta){
+  Object.assign(PL,{steps,meta,i:0,rem:0,paused:false,last:performance.now(),elapsed:0,half:false,bubbleAt:0,lastWhole:99,curYt:null});
+  PL.works=steps.filter(s=>s.type==='work').length;let wi=0;steps.forEach(s=>{if(s.type==='work')s.wi=wi++;else s.wi=wi});
+  $('#player').innerHTML=`
+    <div class="pl-top"><button class="iconbtn" data-a="pl-close" aria-label="Завершить">${IC.close}</button>
+      <div class="pl-prog"><div class="segs" id="plSegs">${steps.filter(s=>s.type==='work').map(()=>'<i></i>').join('')}</div><div class="pl-meta"><span id="plCount"></span><span id="plLeft"></span></div></div>
+      <button class="iconbtn" data-a="pl-sound" id="plSound" aria-label="Звук"></button></div>
+    <div class="pl-media"><div class="video"><iframe id="plVid" title="Видео упражнения" allow="autoplay; encrypted-media; picture-in-picture" src="about:blank"></iframe><div class="poster" id="plPoster" hidden><img id="plPosterImg" alt=""><span id="plPosterTxt"></span></div></div><span class="pl-side" id="plSide" hidden></span></div>
+    <div class="coach"><div id="plMascot"></div><p class="bubble" id="plBubble"></p></div>
+    <div class="pl-info"><span class="pl-kind" id="plKind"></span><h2 id="plName"></h2><div class="pl-time" id="plTime"></div><div class="pl-bar"><i id="plBar"></i></div><p class="pl-cue" id="plCue"></p></div>
+    <div class="pl-ctrl"><button class="cbtn" data-a="pl-prev" aria-label="Назад">${IC.prev}</button><button class="cbtn main" data-a="pl-toggle" id="plToggle" aria-label="Пауза">${IC.pause}</button><button class="cbtn" data-a="pl-next" aria-label="Дальше">${IC.next}</button></div>
+    <button class="pl-pain" data-a="pl-pain">Неприятно или больно?</button>`;
+  $('#player').hidden=false;document.body.classList.add('lock');backBtn(false);
+  setSoundIcon();wakeOn();
+  plLoad(0);
+  PL.timer=setInterval(plTick,200);
+}
+function setSoundIcon(){const b=$('#plSound');if(b){b.innerHTML=store.settings.sound?IC.sound:IC.mute;b.setAttribute('aria-label',store.settings.sound?'Выключить звук':'Включить звук')}}
+let mascotState='';
+function setMascot(st){if(st===mascotState)return;mascotState=st;$('#plMascot').innerHTML=mascot(st)}
+function plLoad(i){
+  PL.i=i;const s=PL.steps[i];const ex=EX[s.ex];
+  PL.rem=s.dur;PL.half=false;PL.lastWhole=99;PL.stepStart=PL.elapsed;
+  const vid=$('#plVid'),poster=$('#plPoster');
+  if(s.type==='work'){
+    poster.hidden=true;
+    if(PL.curYt!==ex.yt){PL.curYt=ex.yt;vid.src=embedUrl(ex.yt,{autoplay:1,mute:1,loop:1,playlist:ex.yt,controls:0})}
+    else if(!PL.paused) ytCmd('playVideo');
+    setMascot('hello');
+  }else{
+    if(PL.curYt){PL.curYt=null;vid.src='about:blank'}
+    $('#plPosterImg').src=thumbUrl(ex.yt);$('#plPosterTxt').textContent=s.type==='prep'?'Первое упражнение':'Следующее';
+    poster.hidden=false;setMascot('calm');
+  }
+  const kindEl=$('#plKind');
+  kindEl.textContent=s.type==='prep'?'Приготовься':s.type==='rest'?'Отдых':s.phase;
+  $('#plName').textContent=ex.name;
+  $('#plCue').textContent=s.type==='work'?ex.cue:'Исходное положение: '+ex.steps[0].charAt(0).toLowerCase()+ex.steps[0].slice(1);
+  const side=$('#plSide');
+  if(s.type==='work'&&ex.sides){side.hidden=false;side.textContent=ex.sides==='alt'?'Чередуй стороны':'Сначала одна сторона'}else side.hidden=true;
+  [...document.querySelectorAll('#plSegs i')].forEach((g,k)=>{g.className=k<s.wi?'d':(k===s.wi&&s.type==='work')?'c':''});
+  $('#plCount').textContent=`Упражнение ${Math.min(s.wi+1,PL.works)} из ${PL.works}`;
+  if(s.type==='prep'){setBubble(pick(PH.start));say('Приготовься. '+ex.name)}
+  else if(s.type==='rest'){setBubble(pick(PH.rest));say('Отдых. Дальше: '+ex.name)}
+  else{setBubble(pick(PH.mid));beep(1046,.22);haptic('medium');setTimeout(()=>say(ex.name),250)}
+  PL.bubbleAt=PL.elapsed;
+  plRender();
+}
+function setBubble(t){const b=$('#plBubble');if(b)b.textContent=t}
+function plRender(){
+  const s=PL.steps[PL.i];if(!s)return;
+  $('#plTime').textContent=fmt(PL.rem);
+  $('#plBar').style.width=(100*(1-PL.rem/s.dur)).toFixed(1)+'%';
+  let left=PL.rem;for(let k=PL.i+1;k<PL.steps.length;k++)left+=PL.steps[k].dur;
+  $('#plLeft').textContent='Осталось '+fmt(left);
+}
+function plTick(){
+  const now=performance.now();const dt=Math.min(1,(now-PL.last)/1000);PL.last=now;
+  if(PL.paused)return;
+  PL.rem-=dt;PL.elapsed+=dt;
+  const s=PL.steps[PL.i];const ex=EX[s.ex];
+  const whole=Math.ceil(PL.rem);
+  if(whole!==PL.lastWhole){PL.lastWhole=whole;if(whole<=3&&whole>=1){beep(660,.1);haptic('light')}}
+  if(s.type==='work'){
+    if(ex.sides==='split'&&!PL.half&&PL.rem<=s.dur/2){PL.half=true;setBubble('Смени сторону!');say('Смени сторону');beep(880,.18);haptic('heavy');const sd=$('#plSide');if(sd)sd.textContent='Теперь другая сторона';PL.bubbleAt=PL.elapsed}
+    else if(PL.rem<=6&&PL.rem>5.6){setBubble(pick(PH.end));setMascot('cheer');PL.bubbleAt=PL.elapsed}
+    else if(PL.elapsed-PL.bubbleAt>11&&PL.rem>8){setBubble(pick(PH.mid));PL.bubbleAt=PL.elapsed}
+  }
+  if(PL.rem<=0){if(PL.i<PL.steps.length-1)plLoad(PL.i+1);else{plFinish(true);return}}
+  plRender();
+}
+function plStop(){clearInterval(PL.timer);PL.timer=null;wakeOff();try{speechSynthesis.cancel()}catch(e){}const v=$('#plVid');if(v)v.src='about:blank';$('#player').hidden=true;$('#player').innerHTML='';mascotState='';document.body.classList.remove('lock')}
+function plToggle(force){
+  PL.paused=force!==undefined?force:!PL.paused;PL.last=performance.now();
+  const b=$('#plToggle');b.innerHTML=PL.paused?IC.play:IC.pause;b.setAttribute('aria-label',PL.paused?'Продолжить':'Пауза');
+  if(PL.paused){ytCmd('pauseVideo');setBubble('Пауза. Отдохни, сколько нужно.');setMascot('calm')}else{ytCmd('playVideo');setBubble(pick(PH.mid))}
+}
+let finCleanup=null;
+function plFinish(done){
+  const minutes=Math.max(1,Math.round(PL.elapsed/60));
+  const before=stats();const gotBefore=new Set(BADGES.filter(b=>b.t(before)).map(b=>b.id));const lvBefore=level(before.min*10);
+  const works=PL.steps.slice(0,PL.i+1).filter(s=>s.type==='work').length;
+  const meta=PL.meta;
+  plStop();
+  const d=new Date();
+  store.log.push({d:dkey(d),ts:d.getTime(),min:minutes,id:meta.id,kind:meta.kind,cat:meta.cat});save();
+  const after=stats();const lv=level(after.min*10);const fresh=BADGES.filter(b=>b.t(after)&&!gotBefore.has(b.id));
+  const pct=lv.to?Math.round(100*(lv.xp-lv.from)/(lv.to-lv.from)):100;
+  say(done?'Тренировка завершена. Ты умница!':'Отличная работа!');haptic('success');
+  $('#finish').innerHTML=`<div class="in">
+    ${mascot('cheer')}
+    <h2>${pick(PH.fin)}</h2>
+    <div class="fin-stats"><div><b>${minutes}</b><small>${plural(minutes,'минута','минуты','минут')}</small></div><div><b>${works}</b><small>${plural(works,'упражнение','упражнения','упражнений')}</small></div><div><b>+${minutes*10}</b><small>звёзд</small></div></div>
+    <div class="fin-stats"><div style="grid-column:1/-1"><b>${after.cur} ${plural(after.cur,'день','дня','дней')}</b><small>серия подряд${after.cur>1?', так держать!':''}</small></div></div>
+    <div class="lvbox"><b>${lv.n>lvBefore.n?'Новый уровень: ':'Уровень '+lv.n+': '}${lv.name}</b><div class="bar"><i style="width:${pct}%"></i></div><small>${lv.to?`${lv.xp} из ${lv.to} звёзд`:'Максимальный уровень!'}</small></div>
+    ${fresh.map(b=>`<div class="fin-badge">${badgeSVG(b)}<div><b>Новый значок: ${b.name}</b><small>${b.desc}</small></div></div>`).join('')}
+    <button class="btn" data-a="fin-done">Готово</button></div>`;
+  $('#finish').hidden=false;document.body.classList.add('lock');
+  confetti();
+}
+function confetti(){
+  if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  const c=$('#confetti');c.hidden=false;const ctx=c.getContext('2d');const dpr=window.devicePixelRatio||1;
+  c.width=innerWidth*dpr;c.height=innerHeight*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);
+  const cols=['#FFB547','#2FA37F','#F38B97','#FFFFFF','#F2A65A','#9AD8C3'];
+  const P=Array.from({length:120},()=>({x:Math.random()*innerWidth,y:-20-Math.random()*innerHeight*.5,vx:(Math.random()-.5)*2,vy:2+Math.random()*3,r:Math.random()*6.28,vr:(Math.random()-.5)*.3,w:6+Math.random()*6,h:4+Math.random()*4,c:cols[Math.floor(Math.random()*cols.length)]}));
+  const t0=performance.now();
+  (function f(t){ctx.clearRect(0,0,innerWidth,innerHeight);P.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.r+=p.vr;ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.r);ctx.fillStyle=p.c;ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);ctx.restore()});
+    if(t-t0<4200)requestAnimationFrame(f);else{ctx.clearRect(0,0,innerWidth,innerHeight);c.hidden=true}})(t0);
+}
+function modal(html){$('#modalBox').innerHTML=html;$('#modal').hidden=false}
+function closeModal(){$('#modal').hidden=true}
+
+/* ============ actions ============ */
+const ACT={
+  tab:b=>{tab=b.dataset.id;render();window.scrollTo(0,0);haptic('light')},
+  open:b=>{SS={kind:b.dataset.kind,id:b.dataset.id,min:b.dataset.kind==='prog'?PROG_BY[b.dataset.id].def:10,mode:store.settings.mode,pain:'ok'};openSheet();renderStart();$('#panel').scrollTop=0},
+  ex:b=>{if(!SS){SS={};openSheet()}renderDetail(b.dataset.id)},
+  'sheet-back':()=>{if(SS&&SS.kind)renderStart();else closeSheet()},
+  'close-sheet':()=>closeSheet(),
+  safety:()=>{SS={};openSheet();renderSafety()},
+  'hide-tip':()=>{store.tipHidden=true;save();render()},
+  chip:b=>{const g=b.dataset.g,v=b.dataset.v;SS[g]=g==='min'?Number(v):v;if(g==='mode'){store.settings.mode=v;save()}const top=$('#panel').scrollTop;renderStart();$('#panel').scrollTop=top;haptic('light')},
+  start:()=>{
+    const info=startInfo();const steps=buildPlan(info.pool,SS.min,SS.mode,SS.pain);
+    const meta={id:SS.id,kind:SS.kind,cat:SS.pain==='bad'?'stretch':info.cat};
+    beep(523,.05);
+    $('#panel').innerHTML='';$('#sheet').hidden=true;SS=null;
+    plStart(steps,meta);
+  },
+  'pl-toggle':()=>plToggle(),
+  'pl-next':()=>{if(PL.i<PL.steps.length-1)plLoad(PL.i+1);else plFinish(true)},
+  'pl-prev':()=>{if(PL.elapsed-PL.stepStart>3||PL.i===0)plLoad(PL.i);else plLoad(PL.i-1)},
+  'pl-sound':()=>{store.settings.sound=!store.settings.sound;save();setSoundIcon();if(!store.settings.sound)try{speechSynthesis.cancel()}catch(e){}},
+  'pl-close':()=>{plToggle(true);const m=Math.round(PL.elapsed/60);
+    modal(PL.elapsed>=60?`<h3>Закончить тренировку?</h3><p>Ты уже позанималась ${m} ${plural(m,'минуту','минуты','минут')}. Сохраним прогресс?</p><button class="btn" data-a="q-save">Сохранить и закончить</button><button class="btn ghost" data-a="q-cont">Продолжить тренировку</button>`
+      :`<h3>Закончить тренировку?</h3><p>Прошло меньше минуты, тренировка не сохранится.</p><button class="btn" data-a="q-cont">Продолжить тренировку</button><button class="btn ghost" data-a="q-drop">Выйти</button>`)},
+  'q-save':()=>{closeModal();plFinish(false)},
+  'q-cont':()=>{closeModal();plToggle(false)},
+  'q-drop':()=>{closeModal();plStop();render()},
+  'pl-pain':()=>{plToggle(true);modal(`<h3>Остановимся</h3><p>Пропусти это упражнение. Если боль острая, отдаёт в ногу или появилось онемение, закончи тренировку и обратись к врачу.</p><button class="btn" data-a="p-skip">Пропустить упражнение</button><button class="btn ghost" data-a="p-end">Закончить на сегодня</button>`)},
+  'p-skip':()=>{closeModal();let j=PL.i+1;while(j<PL.steps.length&&PL.steps[j].type!=='work')j++;
+    if(j>=PL.steps.length){plFinish(false);return}
+    const rest=PL.steps[j-1];plToggle(false);plLoad(rest&&rest.type==='rest'?j-1:j)},
+  'p-end':()=>{closeModal();if(PL.elapsed>=60)plFinish(false);else{plStop();render()}},
+  'fin-done':()=>{$('#finish').hidden=true;$('#finish').innerHTML='';document.body.classList.remove('lock');tab='home';render();window.scrollTo(0,0)}
+};
+document.addEventListener('click',e=>{const b=e.target.closest('[data-a]');if(!b)return;const f=ACT[b.dataset.a];if(f)f(b,e)});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('#modal').hidden&&!$('#sheet').hidden)closeSheet()});
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&PL.timer){PL.last=performance.now();wakeOn()}});
+if(TG&&TG.BackButton){try{TG.BackButton.onClick(()=>{if(!$('#modal').hidden)return;if(!$('#sheet').hidden){if(SS&&SS.kind&&$('#panel .detail'))renderStart();else closeSheet()}})}catch(e){}}
+
+$('#brandAv').innerHTML=mascot('calm');
+$('#shieldBtn').innerHTML=IC.shield;
+render();
+loadCloud();
+if('serviceWorker' in navigator&&location.protocol==='https:'){navigator.serviceWorker.register('sw.js').catch(()=>{})}
+})();
+</script>
+</body>
+</html>
