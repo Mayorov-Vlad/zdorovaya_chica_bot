@@ -297,6 +297,24 @@ ol.steps li::before{content:counter(s);width:28px;height:28px;border-radius:50%;
 .safety .chev{margin-left:auto}
 .safety{grid-template-columns:44px minmax(0,1fr) 22px}
 
+
+.feat{width:100%;border:0;background:var(--surface);border-radius:24px;padding:8px;text-align:left;display:grid;gap:10px;margin-top:14px}
+.strip.four{grid-template-columns:2fr 1fr 1fr 1fr}
+.strip.four .thumb{aspect-ratio:auto;height:96px}
+.feat-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:0 6px 6px}
+.feat-row b{display:block;font-family:var(--font-d);font-weight:700;font-size:18px;line-height:1.2;margin:3px 0 4px}
+.feat-row p{color:var(--muted);font-size:13.5px;font-weight:500}
+.go.big{width:56px;height:56px;padding:0;justify-content:center;flex:0 0 auto;border-radius:50%}
+.go.big svg{width:24px;height:24px}
+.safety.res{border-color:var(--cta);margin-top:28px}
+.safety.res i{background:var(--cta);color:var(--cta-ink)}
+.safety.res+.safety{margin-top:10px}
+.res-cat .mascot{width:110px;display:block;margin:0 auto}
+.timeline{list-style:none;margin:0;padding:0;display:grid;gap:10px;position:relative}
+.timeline li{display:grid;gap:4px;background:var(--surface);border-radius:16px;padding:12px 14px;border-left:4px solid var(--brand)}
+.timeline li b{font-weight:800;color:var(--brand)}
+.timeline li span{font-size:14.5px}
+
 /* mascot motion */
 .mascot .m-wave{transform-origin:124px 148px;animation:wave 1.3s ease-in-out infinite}
 .mascot .m-tail{transform-origin:130px 188px;animation:tail 2.6s ease-in-out infinite}
@@ -436,6 +454,7 @@ const PARTS=[
   ]}
 ];
 
+const FULL={id:'fullMorning',name:'Утренняя зарядка на всё тело',promise:'От шеи до ног: 15 упражнений подряд с видео',min:15,ex:['seatedMarch','shoulderRolls','chinTuck','scapSqueeze','pecStretch','chairSquat','calfRaise','standHipAbd','snowAngel','deadBug','bridge','clamshell','birdDog','hamStretch','figure4'],tag:'Зарядка'};
 const DAILY=[
   {id:'morning',name:'Утро: шея и осанка',promise:'Против холки, каждый день',min:7,ex:['breathing','shoulderRolls','chinTuck','scapSqueeze','snowAngel','pecStretch','upperTrap'],tag:'Каждый день'},
   {id:'base',name:'Основа для поясницы',promise:'Главный комплекс для спины',min:10,ex:['breathing','deadBug','birdDog','sidePlank','bridge'],tag:'Каждый день'},
@@ -471,7 +490,7 @@ const embedUrl=(id,o)=>{const p=new URLSearchParams(Object.assign({playsinline:1
 const thumb=(id,cls,play)=>`<div class="thumb ${cls||''}"><img src="${thumbUrl(EX[id].yt)}" alt="" loading="lazy" decoding="async" onerror="this.style.opacity=0">${play?`<span class="pl">${IC.play}</span>`:''}</div>`;
 const PART_BY=Object.fromEntries(PARTS.map(p=>[p.id,p]));
 const SUB_BY={};PARTS.forEach(p=>p.subs.forEach(s=>{s.part=p.id;SUB_BY[s.id]=s}));
-DAILY.forEach(d=>{d.part='daily';SUB_BY[d.id]=d});
+DAILY.forEach(d=>{d.part='daily';SUB_BY[d.id]=d});FULL.part='daily';SUB_BY[FULL.id]=FULL;
 const partOfEx=id=>PARTS.filter(p=>p.subs.some(s=>s.ex.includes(id))).map(p=>p.name);
 /* ============ Telegram ============ */
 const TG=(window.Telegram&&Telegram.WebApp&&Telegram.WebApp.platform&&Telegram.WebApp.platform!=='unknown')?Telegram.WebApp:null;
@@ -628,12 +647,17 @@ function vHome(){
     <div class="greet-body"><p class="bubble">${greet(st,today)}</p>
       <div class="pills"><span class="pill">${IC.flame}<b>${st.cur}</b> ${plural(st.cur,'день','дня','дней')} подряд</span><span class="pill">${IC.star}<b>${lv.n}</b> ${lv.name}</span></div></div>
   </section>
+  <button class="feat" data-a="open" data-id="fullMorning">
+    <div class="strip four">${['chinTuck','chairSquat','bridge','birdDog'].map(id=>thumb(id)).join('')}</div>
+    <div class="feat-row"><div><span class="eyebrow">Зарядка · ${FULL.min} мин</span><b>${FULL.name}</b><p>${FULL.promise}. Видео идут одно за другим, как одна тренировка.</p></div><span class="go big">${IC.play}</span></div>
+  </button>
   <div class="sec-head"><h2>Каждый день</h2><span>${Math.min(st.thisWeek,7)} из 7 на этой неделе</span></div>
   <p class="lead">Первые два комплекса делай ежедневно, остальные два чередуй.</p>
   <div class="hscroll">${DAILY.map(d=>`<button class="dcard" data-a="open" data-id="${d.id}">${thumb(d.ex[2])}<span class="tagp">${d.tag}</span><b>${d.name}</b><small>${d.min} мин · ${d.promise}</small></button>`).join('')}</div>
   <div class="sec-head"><h2>Что тренируем</h2></div>
   <div class="parts">${PARTS.map(p=>`<button class="part" data-a="part" data-id="${p.id}">${thumb(p.thumb)}<b>${p.name}</b><small>${p.subs.map(s=>s.name).join(' · ')}</small></button>`).join('')}
     <button class="part lib" data-a="library">${thumb('bridge')}<b>Все упражнения</b><small>${exWord(Object.keys(EX).length)} с видео и техникой</small></button></div>
+  <button class="safety res" data-a="results"><i>${IC.star}</i><div><b>Что даст регулярность</b><small>Чего ждать через 2 недели, 2 месяца и полгода</small></div><span class="chev">${IC.chev}</span></button>
   <button class="safety" data-a="safety"><i>${IC.shield}</i><div><b>Бережно к пояснице</b><small>Как подобраны упражнения, научная основа и когда остановиться</small></div><span class="chev">${IC.chev}</span></button>
   <p class="sync">${hasCloud?'Прогресс сохраняется в твоём Телеграме.':'Прогресс хранится на этом телефоне.'}</p>`;
 }
@@ -673,7 +697,7 @@ function vAwards(){
   <div class="card week" style="margin-top:10px"><div class="week-head"><b>Эта неделя</b><span>${st.thisWeek} ${plural(st.thisWeek,'тренировка','тренировки','тренировок')}</span></div><div class="days">${weekStrip(st)}</div></div>
   <h2 class="sec-title">Последние 4 недели</h2>
   <div class="card"><div class="cal">${cal}</div></div>
-  <p class="lead" style="margin-top:12px">Заметный результат для спины обычно появляется через 6–12 недель регулярных занятий, для осанки — через 2–3 месяца. Главное — не пропускать.</p>
+  <button class="safety res" data-a="results" style="margin-top:12px"><i>${IC.star}</i><div><b>Что даст регулярность</b><small>Спина — через 6–12 недель, осанка — через 2–3 месяца</small></div><span class="chev">${IC.chev}</span></button>
   <h2 class="sec-title">Значки</h2>
   <p class="lead">Получено ${BADGES.filter(b=>b.t(st)).length} из ${BADGES.length}. За каждую минуту тренировки — 10 звёзд.</p>
   <div class="badges">${BADGES.map(b=>`<div class="badge${b.t(st)?'':' locked'}">${badgeSVG(b)}<b>${b.name}</b><small>${b.desc}</small></div>`).join('')}</div>`;
@@ -715,7 +739,7 @@ function renderStart(){
   $('#panel').innerHTML=`
     <div class="panel-bar"><span style="width:38px"></span><div class="grab"></div><button class="iconbtn" data-a="close-sheet" aria-label="Закрыть">${IC.close}</button></div>
     <div class="sh-head"><div class="strip big">${uniq(sub.ex).slice(0,3).map(id=>thumb(id)).join('')}</div>
-      <h2>${sub.name}</h2><p>${sub.promise}</p></div>
+      <h2>${sub.name}</h2><p>${sub.promise}</p>${sub.id==='fullMorning'?'<p class="vnote">Видео идут одно за другим без остановок, между ними короткая пауза, чтобы сменить положение. Понадобятся стул и коврик.</p>':''}</div>
     <h3>Как спина сегодня?</h3>
     <div class="chips">${chip('pain','ok','Хорошо')}${chip('pain','ache','Немного ноет')}${chip('pain','bad','Сильно болит','bad')}</div>
     ${painNote}
@@ -745,6 +769,38 @@ function renderDetail(id){
       <h3>Почему это работает</h3>
       <div class="callout why">${IC.shield}<span>${e.why}</span></div>
       ${parts.length?`<p class="vnote" style="margin-top:12px">Входит в разделы: ${parts.join(', ')}.</p>`:''}
+    </div>`;
+  $('#panel').scrollTop=0;
+}
+
+function renderResults(){
+  const T=[
+    ['Через 1–2 недели','Утром легче вставать, спина меньше «деревенеет». Появляется ощущение, что мышцы спины и живота включаются и держат корпус. Шея и плечи меньше устают за компьютером.'],
+    ['Через 6–12 недель','Боль в пояснице заметно уменьшается: в исследованиях лечебная физкультура в среднем снижала боль на 15 пунктов из 100. Ягодицы и мышцы кора становятся сильнее, спина выносливее, легче долго сидеть, стоять и носить сумки.'],
+    ['Через 2–3 месяца','Осанка меняется на вид: голова встаёт ближе к правильному положению, плечи раскрываются, сутулость уменьшается. Холка от сутулости становится менее заметной.'],
+    ['Через полгода и дальше','Новые приступы боли в спине случаются реже: в год после начала регулярных занятий их риск примерно на треть ниже. Тело подтянутее, лучше равновесие, крепче сон и настроение.']
+  ];
+  $('#panel').innerHTML=`
+    <div class="panel-bar"><span style="width:38px"></span><div class="grab"></div><button class="iconbtn" data-a="close-sheet" aria-label="Закрыть">${IC.close}</button></div>
+    <div class="prose">
+      <div class="res-cat">${mascot('cheer')}</div>
+      <h2 style="font-size:21px">Что даст регулярность</h2>
+      <p>Если заниматься каждый день по 15–20 минут: утренняя зарядка или «Основа для поясницы» плюс комплекс для шеи. Это реальные ожидания по исследованиям, без обещаний чуда.</p>
+      <ol class="timeline">${T.map(([h,t])=>`<li><b>${h}</b><span>${t}</span></li>`).join('')}</ol>
+      <h3>Честно о важном</h3>
+      <ul>
+        <li><b>Эффект держится, пока занимаешься.</b> Если бросить, боль и сутулость постепенно возвращаются.</li>
+        <li><b>Холка бывает двух видов.</b> Если это сутулость, упражнения её заметно уменьшают. Если это жировая подушка на шее, упражнения улучшат осанку, но саму подушку не уберут, тут помогает общее снижение веса.</li>
+        <li><b>Остеохондроз не исчезнет:</b> изменения в дисках не обращаются вспять. Но крепкие мышцы разгружают позвоночник, и спина болит меньше и реже.</li>
+        <li>Добавь ходьбу 20–30 минут в день, это усиливает эффект.</li>
+      </ul>
+      <h3>Источники</h3>
+      <ul class="src">
+        <li><a href="https://cochranelibrary.com/cdsr/doi/10.1002/14651858.CD009790.pub2/information" target="_blank" rel="noopener">Кокрейновский обзор 2021: лечебная физкультура при боли в пояснице</a></li>
+        <li><a href="https://chiro.org/LINKS/ABSTRACTS/Prevention_of_Low_Back_Pain.shtml" target="_blank" rel="noopener">Steffens и др., JAMA Intern Med 2016: упражнения снижают риск новых эпизодов боли</a></li>
+        <li><a href="https://www.dovepress.com/therapeutic-exercise-for-forward-head-posture-in-neck-pain-patients-a--peer-reviewed-fulltext-article-JPR" target="_blank" rel="noopener">Метаанализ 2026: упражнения при выдвинутой вперёд голове</a></li>
+        <li><a href="https://escholarship.org/uc/item/0bf5w0h5" target="_blank" rel="noopener">Исследование SHEAF: упражнения уменьшают сутулость</a></li>
+      </ul>
     </div>`;
   $('#panel').scrollTop=0;
 }
@@ -928,6 +984,7 @@ const ACT={
   'sheet-back':()=>{if(SS&&SS.id)renderStart();else closeSheet()},
   'close-sheet':()=>closeSheet(),
   safety:()=>{SS={};openSheet();renderSafety()},
+  results:()=>{SS={};openSheet();renderResults()},
   chip:b=>{const g=b.dataset.g,v=b.dataset.v;SS[g]=g==='min'?Number(v):v;if(g==='mode'){store.settings.mode=v;save()}const top=$('#panel').scrollTop;renderStart();$('#panel').scrollTop=top;haptic('light')},
   start:()=>{
     const sub=SUB_BY[SS.id];const steps=buildPlan(sub,SS.min,SS.mode,SS.pain);
